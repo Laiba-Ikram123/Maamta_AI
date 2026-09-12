@@ -287,7 +287,7 @@ def call_groq(prompt):
         raise RuntimeError("GROQ_API_KEY is not configured.")
 
     client = Groq(api_key=api_key)
-    model = st.secrets.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+    model = st.secrets.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
     response = client.chat.completions.create(
         model=model,
