@@ -1,53 +1,108 @@
-/* Layout Adjustments */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* App Canvas & Layout */
 .block-container {
-    max-width: 1150px;
-    padding-top: 2rem;
+    max-width: 1000px !important;
+    padding-top: 1.8rem !important;
+    padding-bottom: 5rem !important;
 }
 
-/* Typography & Titles */
-.maamta-title {
-    font-size: 2.3rem;
+/* Modern Branding Header */
+.maamta-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1.1rem 1.4rem;
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(20, 184, 166, 0.03) 100%);
+    border: 1px solid rgba(13, 148, 136, 0.2);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(8px);
+}
+
+.maamta-hero-icon {
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+}
+
+.maamta-hero-text h1 {
+    font-size: 1.8rem;
     font-weight: 700;
-    margin-bottom: 0.2rem;
-    color: #1a1a1a;
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: #0f766e;
 }
 
-.maamta-subtitle {
-    color: #6c757d;
-    font-size: 1.05rem;
-    margin-bottom: 1.5rem;
+.maamta-hero-text p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #4b5563;
+    font-weight: 500;
 }
 
-/* Notice / Disclaimer Card */
-.notice {
-    padding: 1.1rem;
-    border: 1px solid #d9dee3;
-    border-radius: 10px;
-    background-color: #fafbfc;
-    color: #212529 !important;
+/* Clean Triage Response Container */
+.response-container {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.6rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
     margin-top: 1.5rem;
-    line-height: 1.5;
-    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #1f2937;
+}
+
+/* Section Headings inside Response */
+.response-container h3, .response-container strong {
+    color: #111827;
+}
+
+/* Medical Disclaimer Card */
+.notice {
+    padding: 1.1rem 1.3rem;
+    border: 1px solid #e5e7eb;
+    border-left: 4px solid #0d9488;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    color: #334155 !important;
+    margin-top: 1.8rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
 }
 
 .notice strong {
-    color: #0d1117 !important;
+    color: #0f766e !important;
     font-weight: 600;
 }
 
-/* Emergency / Urgent Card */
-.urgent {
-    padding: 1.1rem;
-    border: 1px solid #f5c2c7;
-    border-left: 5px solid #dc3545;
-    border-radius: 10px;
-    background-color: #fff8f8;
-    color: #842029 !important;
-    margin-bottom: 1rem;
-    line-height: 1.5;
+/* Sidebar Custom Styling */
+section[data-testid="stSidebar"] {
+    background-color: #fafbfc;
+    border-right: 1px solid #e5e7eb;
 }
 
-.urgent strong {
-    color: #721c24 !important;
-    font-weight: 700;
+section[data-testid="stSidebar"] .stRadio > label {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Floating Chat Input Bar */
+div[data-testid="stChatInput"] {
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    border-radius: 12px !important;
 }
