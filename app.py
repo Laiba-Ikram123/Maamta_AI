@@ -37,7 +37,7 @@ DISCLAIMER = (
 
 GUIDELINE_DIR = Path("guidelines")
 TOP_K = 5
-MIN_RELEVANCE = 0.16
+MIN_RELEVANCE = 0.05
 
 # Pakistan-first source priority. Keep this list limited to documents that your
 # project team has actually approved and placed in guidelines/.
