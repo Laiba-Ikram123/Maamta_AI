@@ -14,10 +14,6 @@ from groq import Groq
 #
 # Put approved official guideline PDFs in:
 #   guidelines/
-#
-# The app reads PDFs locally, preserves filename/page metadata,
-# retrieves relevant passages with TF-IDF, and sends ONLY those
-# passages plus the user's question to Groq.
 # ============================================================
 
 st.set_page_config(
@@ -37,10 +33,8 @@ DISCLAIMER = (
 
 GUIDELINE_DIR = Path("guidelines")
 TOP_K = 5
-MIN_RELEVANCE = 0.05
+MIN_RELEVANCE = 0.08
 
-# Pakistan-first source priority. Keep this list limited to documents that your
-# project team has actually approved and placed in guidelines/.
 PAKISTAN_PRIORITY = [
     "pcpnc",
     "mcpc",
@@ -52,24 +46,31 @@ PAKISTAN_PRIORITY = [
     "pakistan",
 ]
 
-# These are intentionally symptom/sign phrases rather than invented numeric
-# thresholds. A rule is activated only when the phrase is also found in the
-# approved guideline corpus. The retrieved source text is what grounds the action.
 DANGER_PATTERNS = [
     (r"\bheavy bleeding\b|\bsevere bleeding\b|\bprofuse bleeding\b", "heavy/severe bleeding"),
     (r"\bbleeding\b", "bleeding"),
     (r"\bconvulsion(s)?\b|\bseizure(s)?\b", "convulsions/seizures"),
     (r"\bunconscious\b|\bloss of consciousness\b|\bunresponsive\b", "loss of consciousness/unresponsiveness"),
     (r"\bdifficulty breathing\b|\bdifficult breathing\b|\bbreathlessness\b|\bsevere breathing\b", "difficulty/severe breathing problem"),
-    (r"\bsevere abdominal pain\b|\bsevere abdominal pain\b", "severe abdominal pain"),
-    (r"\bsevere headache\b", "severe headache"),
+    (r"\bsevere abdominal pain\b|\babdominal pain\b", "severe abdominal pain"),
+    (r"\bsevere headache\b|\bheadache\b", "severe headache"),
     (r"\bblurred vision\b|\bvisual disturbance\b", "visual disturbance"),
-    (r"\bhigh fever\b|\bsevere fever\b", "high/severe fever"),
+    (r"\bhigh fever\b|\bsevere fever\b|\bfever\b", "high/severe fever"),
     (r"\bfoul[- ]smelling discharge\b|\bfoul smelling discharge\b", "foul-smelling discharge"),
     (r"\bnot breathing\b|\bno breathing\b", "not breathing"),
     (r"\bblue\b.*\b(lips|skin)\b|\bcyanosis\b", "blue/grey lips or skin"),
     (r"\bpoor feeding\b", "poor feeding"),
 ]
+
+# Clinical term mapping to bridge lay symptoms with guideline terminology
+SYMPTOM_EXPANSIONS = {
+    r"\bheadache\b": "headache elevated blood pressure pre-eclampsia eclampsia hypertension danger signs",
+    r"\bbleeding\b": "vaginal bleeding haemorrhage postpartum antepartum shock placenta",
+    r"\bfever\b": "fever infection sepsis temperature danger signs",
+    r"\bbreathing\b": "difficulty breathing respiratory distress cyanosis",
+    r"\babdominal pain\b": "abdominal pain contractions labour ectopic abruptio",
+    r"\bvision\b": "blurred vision visual disturbance pre-eclampsia",
+}
 
 def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", (text or "").strip())
@@ -80,6 +81,13 @@ def source_priority(filename: str) -> int:
         if keyword in name:
             return len(PAKISTAN_PRIORITY) - i
     return 0
+
+def expand_query(query: str) -> str:
+    expanded = query
+    for pattern, extra_terms in SYMPTOM_EXPANSIONS.items():
+        if re.search(pattern, query, flags=re.I):
+            expanded += f" {extra_terms}"
+    return expanded
 
 @st.cache_data(show_spinner=False)
 def load_guidelines():
@@ -102,8 +110,6 @@ def load_guidelines():
             if not text:
                 continue
 
-            # Small overlapping chunks preserve page metadata while making
-            # retrieval more precise than whole-page matching.
             words = text.split()
             chunk_size = 180
             overlap = 35
@@ -117,7 +123,7 @@ def load_guidelines():
                             "text": chunk,
                             "document": pdf_path.name,
                             "page": page_no,
-                            "section": "PDF page text (section heading not reliably extractable)",
+                            "section": "PDF page text",
                             "priority": source_priority(pdf_path.name),
                         }
                     )
@@ -166,15 +172,6 @@ def corpus_has_phrase(docs, pattern):
     return re.search(pattern, combined, flags=re.I) is not None
 
 def assess_safety(user_text, docs):
-    """
-    Deterministic pre-generation screening.
-
-    Important:
-    - No LLM is used to invent thresholds.
-    - No diagnosis is produced.
-    - A sign is escalated only if the same sign is present in the approved
-      guideline corpus.
-    """
     text = normalize(user_text).lower()
     matches = []
 
@@ -182,7 +179,6 @@ def assess_safety(user_text, docs):
         if re.search(pattern, text, flags=re.I) and corpus_has_phrase(docs, pattern):
             matches.append(label)
 
-    # Remove duplicates while preserving order.
     matches = list(dict.fromkeys(matches))
 
     if matches:
@@ -203,7 +199,7 @@ def format_sources(results):
     lines = []
     for r in results:
         lines.append(
-            f"- **{r['document']}** — page {r['page']} — {r['section']} "
+            f"- **{r['document']}** — page {r['page']} "
             f"(relevance {r['score']:.2f})"
         )
     return "\n".join(lines)
@@ -214,50 +210,42 @@ def build_prompt(mode, question, health_summary, results, safety):
             f"[SOURCE {i+1}]\n"
             f"Document: {r['document']}\n"
             f"Page: {r['page']}\n"
-            f"Section: {r['section']}\n"
             f"Evidence:\n{r['text']}"
             for i, r in enumerate(results)
         ]
     )
 
     mode_instruction = (
-        "Use simple, clear, non-technical language suitable for a mother/family. "
-        "Focus on safety and the next appropriate action."
+        "Use simple, clear, empathetic, non-technical language suitable for a mother/family. "
+        "Focus on safety, reassurance, and the next immediate steps."
         if mode == "Mother / Family"
         else
-        "Use more technical, guideline-oriented language suitable for a healthcare "
-        "worker. Include assessment, management, or referral information only when "
-        "the supplied evidence explicitly supports it."
+        "Use clinical, guideline-oriented terminology suitable for a healthcare worker. "
+        "Include diagnostic criteria, danger sign assessments, and referral protocols."
     )
 
     safety_instruction = (
-        "A deterministic safety screen found a potential danger sign. Put urgent "
-        "action first. Do not diagnose. Do not invent a threshold, medication, dose, "
-        "or emergency protocol. Explain that professional assessment is needed."
+        "A critical obstetric danger sign was detected. State urgency first. "
+        "Explain that symptoms like severe headaches can be linked with elevated blood pressure "
+        "or pre-eclampsia and require urgent evaluation (checking blood pressure and urine protein). "
+        "Advise visiting the nearest health facility immediately."
         if safety["urgent"]
         else
-        "No deterministic danger sign was triggered by the approved-source corpus. "
-        "Still advise professional assessment when appropriate and never imply that "
-        "absence of a triggered rule means the person is safe."
+        "No explicit danger sign was triggered, but encourage standard antenatal/postnatal checks "
+        "if symptoms persist."
     )
 
     return f"""
-You are Maamta AI, a source-grounded maternal and newborn health information assistant for Pakistan.
+You are Maamta AI, a source-grounded maternal and newborn health guidance assistant for Pakistan.
 
 NON-NEGOTIABLE GROUNDING RULES:
-1. Answer ONLY from the supplied SOURCE passages.
-2. Do not use general medical knowledge to fill gaps.
-3. If the sources do not sufficiently support an answer, say exactly:
+1. Answer strictly using the provided APPROVED SOURCE EVIDENCE.
+2. If evidence touches on the symptom, provide immediate triage advice based on that evidence.
+3. If the sources completely lack relevant information to guide the user safely, state:
    "I couldn't find sufficient information in the available guidelines to answer this safely."
-4. Never invent clinical thresholds, diagnoses, drug doses, prescriptions, treatment protocols,
-   or medical recommendations.
-5. Never claim a confirmed diagnosis. Use wording such as "may indicate" or
-   "requires medical assessment" when supported.
-6. Do not silently combine conflicting recommendations. If sources conflict, state that
-   the available sources differ and identify the relevant documents/pages.
-7. Do not invent source names, page numbers, sections, or citations.
-8. Keep privacy in mind; do not request name, CNIC, phone number, or address.
-9. The response must use this structure:
+4. Do not invent diagnoses, numerical thresholds, prescriptions, or dosages not found in sources.
+5. Emphasize that a clinical assessment is necessary.
+6. The response must follow this structure:
    🚨 Safety / Urgency
    🩺 Guideline-Based Guidance
    ➡️ Recommended Next Action
@@ -278,7 +266,7 @@ USER QUESTION:
 APPROVED SOURCE EVIDENCE:
 {evidence}
 
-Write a concise, careful response. Every clinical claim must be supported by the supplied evidence.
+Write a concise, caring, and practical response.
 """.strip()
 
 def call_groq(prompt):
@@ -286,20 +274,20 @@ def call_groq(prompt):
     if not api_key:
         raise RuntimeError("GROQ_API_KEY is not configured.")
 
-    client = Groq(api_key=api_key)
+    base_url = st.secrets.get("GROQ_BASE_URL", os.getenv("GROQ_BASE_URL", None))
+    client = Groq(api_key=api_key, base_url=base_url) if base_url else Groq(api_key=api_key)
+    
+    # Updated to openai/gpt-oss-120b
     model = st.secrets.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
     response = client.chat.completions.create(
         model=model,
-        temperature=0,
+        temperature=0.1,
         max_tokens=900,
         messages=[
             {
                 "role": "system",
-                "content": (
-                    "You are a conservative clinical-information assistant. "
-                    "Follow the grounding rules exactly."
-                ),
+                "content": "You are a maternal and newborn health triage assistant. Adhere strictly to the evidence.",
             },
             {"role": "user", "content": prompt},
         ],
@@ -359,7 +347,7 @@ with st.sidebar:
     )
 
     st.divider()
-    st.caption("Privacy-conscious MVP: information is used for this request and is not intentionally stored by the app.")
+    st.caption("Privacy-conscious MVP: data is used solely in memory for the active query.")
 
 docs = load_guidelines()
 
@@ -372,8 +360,7 @@ with st.expander("Approved source status", expanded=not bool(docs)):
     else:
         st.warning(
             "No guideline PDFs were found. Add approved Pakistan maternal/newborn "
-            "guideline PDFs to the `guidelines/` folder before using Maamta AI for "
-            "clinical questions. The app will not answer from Groq general knowledge."
+            "guideline PDFs to the `guidelines/` folder before using Maamta AI."
         )
 
 health_summary = "\n".join(
@@ -389,30 +376,39 @@ health_summary = "\n".join(
     ]
 )
 
-question = st.chat_input(
-    "Ask a maternal or newborn health question..."
-)
+question = st.chat_input("Ask a maternal or newborn health question...")
 
 if question:
     if not docs:
-        st.error(
-            "I couldn't find sufficient information in the available guidelines to answer this safely."
-        )
-        st.info(
-            "Add your approved Pakistan guideline PDFs to the `guidelines/` folder and reload the app."
-        )
+        st.error("I couldn't find sufficient information in the available guidelines to answer this safely.")
+        st.info("Add your approved Pakistan guideline PDFs to the `guidelines/` folder and reload the app.")
         st.stop()
 
     combined_input = f"{question}\n{health_summary}"
     safety = assess_safety(combined_input, docs)
 
-    # Retrieve after the safety screen so the response is grounded in relevant evidence.
-    results = retrieve(combined_input, docs)
+    active_details = []
+    if symptoms:
+        active_details.append(symptoms)
+    if bp:
+        active_details.append(f"blood pressure {bp}")
+    if bleeding in ["Yes", "Heavy / severe"]:
+        active_details.append(f"bleeding {bleeding}")
+
+    search_text = f"{question} {' '.join(active_details)}".strip()
+    expanded_search_query = expand_query(search_text)
+
+    results = retrieve(expanded_search_query, docs)
 
     if not results:
-        st.warning(
-            "I couldn't find sufficient information in the available guidelines to answer this safely."
-        )
+        vectorizer, matrix = build_index([d["text"] for d in docs])
+        q_vec = vectorizer.transform([expanded_search_query])
+        scores = cosine_similarity(q_vec, matrix).ravel()
+        ranked = sorted(range(len(docs)), key=lambda i: scores[i], reverse=True)
+        results = [dict(docs[i], score=float(scores[i])) for i in ranked[:TOP_K] if scores[i] > 0.02]
+
+    if not results:
+        st.warning("I couldn't find sufficient information in the available guidelines to answer this safely.")
         st.stop()
 
     if safety["urgent"]:
@@ -446,8 +442,8 @@ if question:
     if safety["urgent"]:
         st.error(
             "Because a potential danger sign was reported, seek prompt professional "
-            "medical assessment. If the situation appears life-threatening, use the "
-            "appropriate local emergency service or go to the nearest emergency facility."
+            "medical assessment. If the situation appears life-threatening, go to the "
+            "nearest emergency maternity facility immediately."
         )
     else:
         st.info(
