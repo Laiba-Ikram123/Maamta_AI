@@ -332,14 +332,37 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# Clean, Modern Header Banner (Subtitles and expander removed)
+# Maternal Health Landing Banner (Hero card & feature grid inspired by the reference UI)
 st.markdown(
     """
-    <div class="maamta-hero">
-        <div class="maamta-hero-icon">🩺</div>
-        <div class="maamta-hero-text">
-            <h1>Maamta AI</h1>
-            <p>Pakistan Maternal & Newborn Clinical Triage</p>
+    <div class="hero-wrapper">
+        <div class="hero-title">
+            Empowering Every Mother With <span>Smarter Maternal Care</span>
+        </div>
+        <div class="hero-subtext">
+            AI-powered maternal triage and danger sign detection, strictly grounded in Pakistan's official national health and clinical guidelines.
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon-box">🩺</div>
+                <h4>Real-Time Triage</h4>
+                <p>Instant danger detection</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box">📚</div>
+                <h4>Source Grounded</h4>
+                <p>Zero hallucinations</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box">🗣️</div>
+                <h4>Bilingual Support</h4>
+                <p>English & Roman Urdu</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box">🏥</div>
+                <h4>Facility Guidance</h4>
+                <p>Urgent referral protocols</p>
+            </div>
         </div>
     </div>
     """,
