@@ -12,7 +12,7 @@ st.set_page_config(
     page_title="Maamta AI",
     page_icon="🩺",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 def load_css(file_name="style.css"):
@@ -332,7 +332,7 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# Maternal Health Landing Banner (Hero card & feature grid inspired by the reference UI)
+# 1. Top Hero Section (Blue Area)
 st.markdown(
     """
     <div class="hero-wrapper">
@@ -340,7 +340,7 @@ st.markdown(
             Empowering Every Mother With <span>Smarter Maternal Care</span>
         </div>
         <div class="hero-subtext">
-            AI-powered maternal triage and danger sign detection, strictly grounded in Pakistan's official national health and clinical guidelines.
+            AI-powered maternal triage and danger sign detection, strictly grounded in Pakistan's official national health guidelines.
         </div>
         <div class="feature-grid">
             <div class="feature-card">
@@ -369,47 +369,48 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-with st.sidebar:
-    st.header("Maamta AI")
-    mode = st.radio(
-        "User mode",
-        ["Mother / Family", "Healthcare Worker"],
-        index=0,
-    )
+# 2. Centered Health Intake Grid (Red Area placed between Hero & Chat)
+st.markdown(
+    """
+    <div class="intake-header">
+        <h3>📋 Patient Intake & Clinical Vitals</h3>
+        <span>Compulsory for Safe Triaging</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
-    st.divider()
-    st.subheader("Structured health information")
-
+r1_col1, r1_col2, r1_col3, r1_col4 = st.columns(4)
+with r1_col1:
+    mode = st.selectbox("User mode", ["Mother / Family", "Healthcare Worker"])
+with r1_col2:
     weeks = st.number_input("Pregnancy weeks", min_value=0, max_value=45, value=0)
+with r1_col3:
     age = st.number_input("Age", min_value=0, max_value=120, value=0)
-    bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
-    temperature = st.text_input("Temperature", placeholder="e.g. 38°C")
-    pulse = st.text_input("Pulse", placeholder="e.g. 90 bpm")
-    bleeding = st.selectbox(
-        "Bleeding",
-        ["Not reported", "No", "Yes", "Heavy / severe"],
-    )
-    symptoms = st.text_area(
-        "Symptoms",
-        placeholder="Describe symptoms relevant to the question.",
-        height=110,
-    )
-    other = st.text_area(
-        "Other relevant details",
-        placeholder="Do not enter name, CNIC, phone, or address.",
-        height=90,
-    )
+with r1_col4:
+    bleeding = st.selectbox("Bleeding status", ["Not reported", "No", "Yes", "Heavy / severe"])
 
-    st.divider()
-    docs = load_guidelines()
-    if docs:
-        docs_count = len(sorted({d["document"] for d in docs}))
-        st.caption(f"🔒 Guidelines: {docs_count} National PDFs loaded in-memory")
-    else:
-        st.caption("⚠️ No guidelines loaded")
+r2_col1, r2_col2, r2_col3, r2_col4 = st.columns(4)
+with r2_col1:
+    bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
+with r2_col2:
+    temperature = st.text_input("Temperature", placeholder="e.g. 37°C")
+with r2_col3:
+    pulse = st.text_input("Pulse", placeholder="e.g. 80 bpm")
+with r2_col4:
+    other = st.text_input("Other medical history", placeholder="e.g. Diabetes, None")
+
+symptoms = st.text_area(
+    "Active symptoms & complaints",
+    placeholder="Describe physical discomfort, pain, headache, nausea, or fever here...",
+    height=80,
+)
+
+docs = load_guidelines()
 
 health_summary = "\n".join(
     [
+        f"User mode: {mode}",
         f"Pregnancy weeks: {weeks}",
         f"Age: {age}",
         f"Blood pressure: {bp}",
@@ -421,7 +422,8 @@ health_summary = "\n".join(
     ]
 )
 
-question = st.chat_input("Ask in English or Urdu...")
+# 3. Bottom Chat Input (Purple Area)
+question = st.chat_input("Ask Maamta AI in English or Roman Urdu...")
 
 if question:
     user_is_urdu = is_roman_urdu(question) or is_roman_urdu(symptoms)
@@ -436,13 +438,13 @@ if question:
     if not pulse.strip():
         missing_fields.append("Pulse" if not user_is_urdu else "Pulse (nabz)")
     if not symptoms.strip():
-        missing_fields.append("Symptoms" if not user_is_urdu else "Symptoms (alamat)")
+        missing_fields.append("Active symptoms" if not user_is_urdu else "Active symptoms (alamat)")
 
     if missing_fields:
         if user_is_urdu:
-            st.warning(f"Baraye meharbani sidebar mein yeh zaroori maloomat darj karein: **{', '.join(missing_fields)}**.")
+            st.warning(f"Baraye meharbani pehle intake form mein yeh zaroori maloomat darj karein: **{', '.join(missing_fields)}**.")
         else:
-            st.warning(f"Please provide the required health information in the sidebar: **{', '.join(missing_fields)}**.")
+            st.warning(f"Please fill in the required health vitals before asking: **{', '.join(missing_fields)}**.")
         st.stop()
 
     if not docs:
@@ -451,7 +453,7 @@ if question:
             st.info("Pehle guidelines folder mein Pakistan official PDFs upload karein.")
         else:
             st.error("I couldn't find sufficient information in the available guidelines to answer this safely.")
-            st.info("Add your approved Pakistan guideline PDFs to the `guidelines/` folder and reload the app.")
+            st.info("Add approved Pakistan guideline PDFs to the `guidelines/` folder.")
         st.stop()
 
     combined_input = f"{question}\n{health_summary}"
@@ -484,7 +486,7 @@ if question:
             st.warning("I couldn't find sufficient information in the available guidelines to answer this safely.")
         st.stop()
 
-    with st.spinner("Reviewing approved guideline evidence..."):
+    with st.spinner("Analyzing national clinical evidence..."):
         try:
             prompt = build_prompt(
                 mode=mode,
