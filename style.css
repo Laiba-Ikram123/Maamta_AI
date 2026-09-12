@@ -1,0 +1,53 @@
+/* Layout Adjustments */
+.block-container {
+    max-width: 1150px;
+    padding-top: 2rem;
+}
+
+/* Typography & Titles */
+.maamta-title {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    color: #1a1a1a;
+}
+
+.maamta-subtitle {
+    color: #6c757d;
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Notice / Disclaimer Card */
+.notice {
+    padding: 1.1rem;
+    border: 1px solid #d9dee3;
+    border-radius: 10px;
+    background-color: #fafbfc;
+    color: #212529 !important;
+    margin-top: 1.5rem;
+    line-height: 1.5;
+    font-size: 0.92rem;
+}
+
+.notice strong {
+    color: #0d1117 !important;
+    font-weight: 600;
+}
+
+/* Emergency / Urgent Card */
+.urgent {
+    padding: 1.1rem;
+    border: 1px solid #f5c2c7;
+    border-left: 5px solid #dc3545;
+    border-radius: 10px;
+    background-color: #fff8f8;
+    color: #842029 !important;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.urgent strong {
+    color: #721c24 !important;
+    font-weight: 700;
+}
