@@ -332,9 +332,17 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-st.markdown('<div class="maamta-title">🩺 Maamta AI</div>', unsafe_allow_html=True)
+# Clean, Modern Header Banner (Subtitles and expander removed)
 st.markdown(
-    '<div class="maamta-subtitle">Source-grounded maternal & newborn health guidance for Pakistan</div>',
+    """
+    <div class="maamta-hero">
+        <div class="maamta-hero-icon">🩺</div>
+        <div class="maamta-hero-text">
+            <h1>Maamta AI</h1>
+            <p>Pakistan Maternal & Newborn Clinical Triage</p>
+        </div>
+    </div>
+    """,
     unsafe_allow_html=True,
 )
 
@@ -370,21 +378,12 @@ with st.sidebar:
     )
 
     st.divider()
-    st.caption("Privacy-conscious MVP: data is processed in-memory and not stored permanently.")
-
-docs = load_guidelines()
-
-with st.expander("Approved source status", expanded=not bool(docs)):
+    docs = load_guidelines()
     if docs:
-        documents = sorted({d["document"] for d in docs})
-        st.success(f"Loaded {len(documents)} PDF document(s) and {len(docs)} searchable passages.")
-        for doc in documents:
-            st.write(f"• {doc}")
+        docs_count = len(sorted({d["document"] for d in docs}))
+        st.caption(f"🔒 Guidelines: {docs_count} National PDFs loaded in-memory")
     else:
-        st.warning(
-            "No guideline PDFs were found. Add approved Pakistan maternal/newborn "
-            "guideline PDFs to the `guidelines/` folder before using Maamta AI."
-        )
+        st.caption("⚠️ No guidelines loaded")
 
 health_summary = "\n".join(
     [
@@ -476,7 +475,7 @@ if question:
             st.error(f"Maamta AI could not generate a response: {exc}")
             st.stop()
 
-    st.markdown(answer)
+    st.markdown(f'<div class="response-container">{answer}</div>', unsafe_allow_html=True)
 
     if user_is_urdu:
         st.markdown(
