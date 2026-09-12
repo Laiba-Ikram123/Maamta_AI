@@ -77,7 +77,7 @@ def normalize(text: str) -> str:
 
 def is_roman_urdu(text: str) -> bool:
     urdu_markers = [
-        r"\b(hai|hain|ki|ka|ke|ko|se|me|mein|par|kya|kyun|kab|kaise|karo|karein|raha|rahi|ho|tha|thi|the|nahi|aur|bhi|bohot|zyada|dard|sar|khoon|peit|pait|bacha|teeka|teekay|hidayat|ilaaj|doctor)\b"
+        r"\b(hai|hain|ki|ka|ke|ko|se|me|mein|par|kya|kyun|kab|kaise|karo|karein|raha|rahi|ho|tha|thi|the|nahi|aur|bhi|bohot|zyada|dard|sar|khoon|peit|pait|bacha|teeka|teekay|hidayat|ilaaj|hona|chahiye)\b"
     ]
     t = text.lower()
     for marker in urdu_markers:
@@ -215,52 +215,68 @@ def build_prompt(mode, question, health_summary, results, safety):
         ]
     )
 
-    mode_instruction = (
-        "Use simple, polite, empathetic language suitable for a mother or family."
-        if mode == "Mother / Family"
-        else
-        "Use clinical, guideline-oriented terminology suitable for a healthcare worker or doctor."
-    )
+    user_is_urdu = is_roman_urdu(question)
 
-    safety_instruction = (
-        "CRITICAL: A potential danger sign was detected! Put urgency and safety guidance first. "
-        "Instruct immediate facility evaluation."
-        if safety["urgent"]
-        else
-        "No severe emergency danger sign was detected. Provide standard guideline recommendations."
-    )
+    if user_is_urdu:
+        mode_instruction = (
+            "Aap aasan, ba-adab aur wazeh Roman Urdu mein baat karein jo mareeza ya uske ghar walon ko aasani se samajh aa sakay."
+            if mode == "Mother / Family"
+            else
+            "Aap clinical aur guideline-oriented Roman Urdu istemal karein jo healthcare worker ya doctor ke liye munasib ho."
+        )
+        safety_instruction = (
+            "ZAROORI: Khatray ki alamat report hui hai! Salamati aur fori hospital janay ki hidayat pehle dein."
+            if safety["urgent"]
+            else
+            "Koi fori emergency alamat nahi mili, aam guideline ke mutabiq mashwara dein."
+        )
+        language_rule = """
+STRICT LANGUAGE REQUIREMENT:
+- The user asked in ROMAN URDU.
+- You MUST answer COMPLETELY in authentic Pakistani Roman Urdu.
+- DO NOT use English sentences in the body.
+- NEVER use Roman Hindi words (Do NOT use: kripya, upchar, lakshan, samasya, turant, chhatra, mahila, prasav, garbhavastha, aspataal, sujhaav). Use Pakistani Roman Urdu words (baraye meharbani, ilaj, alamat, masla, foran, khatoon/aurat, delivery/paidaish, hamal, hospital, mashwara).
+- Section headers must be:
+  🚨 Safety / Urgency (Khatray Ki Alamat)
+  🩺 Guideline-Based Guidance (Hidayat)
+  ➡️ Recommended Next Action (Agla Zaroori Qadam)
+"""
+        final_instruction = "Write a comprehensive, medically accurate, and caring response strictly in Pakistani Roman Urdu."
+    else:
+        mode_instruction = (
+            "Use simple, clear, polite, empathetic English suitable for a mother or her family."
+            if mode == "Mother / Family"
+            else
+            "Use formal clinical and guideline-oriented English suitable for a healthcare worker."
+        )
+        safety_instruction = (
+            "CRITICAL: A potential danger sign was detected! Prioritize safety instructions and immediate facility assessment."
+            if safety["urgent"]
+            else
+            "No severe danger sign detected. Provide standard guideline recommendations."
+        )
+        language_rule = """
+STRICT LANGUAGE REQUIREMENT:
+- The user asked in ENGLISH.
+- You MUST answer COMPLETELY in professional English.
+- DO NOT use any Roman Urdu or Hindi words.
+- Section headers must be:
+  🚨 Safety / Urgency
+  🩺 Guideline-Based Guidance
+  ➡️ Recommended Next Action
+"""
+        final_instruction = "Write a comprehensive, medically accurate, and professional response strictly in English."
 
     return f"""
 You are Maamta AI, an official source-grounded maternal and newborn health assistant for Pakistan.
 
-STRICT LANGUAGE RULES (PAKISTANI ROMAN URDU ONLY):
-1. When the user asks in Roman Urdu or Urdu:
-   - You MUST reply strictly in authentic Pakistani Roman Urdu (the way people speak and text in Pakistan).
-   - STRICTLY FORBIDDEN: NEVER use Roman Hindi words. Do NOT use:
-     * "kripya" -> Use "baraye meharbani" or "aap"
-     * "upchar" / "ilaj" -> Use "ilaj" or "medical dekh bhal"
-     * "lakshan" -> Use "alamat" or "nishaniyan"
-     * "samasya" -> Use "masla" or "takleef"
-     * "turant" / "shighra" -> Use "foran" or "bila taa-kheer"
-     * "chhatra" / "mahila" -> Use "aurat" or "khatoon" or "mareeza"
-     * "prasav" -> Use "delivery" or "paidaish"
-     * "garbhavastha" -> Use "hamal" ya "pregnancy"
-     * "aspataal" -> Use "hospital" ya "qareebi health center"
-     * "sujhaav" -> Use "mashwara" ya "hidayat"
-   - Use natural Pakistani daily phrases: "foran doctor se ruju karein", "khatray ki alamat", "qareebi hospital jayen", "apna blood pressure check karwayen".
-2. If the user asks in English, reply entirely in English.
-3. If the user asks in Urdu script, reply in Urdu script.
+{language_rule}
 
 NON-NEGOTIABLE GROUNDING RULES:
 1. Base your answer STRICTLY on the supplied APPROVED SOURCE EVIDENCE.
 2. If evidence touches on the condition/symptom, give complete guideline-supported advice.
-3. If the evidence completely lacks relevant information to answer safely, reply in clean Roman Urdu:
-   "Mojooda official guidelines mein is baray mein mukammal maloomat nahi mil sakeen." (Or in English: "I couldn't find sufficient information in the available guidelines to answer this safely.")
+3. If the evidence completely lacks relevant information to answer safely, state clearly that official guidelines lack sufficient information.
 4. Never invent medications, dosages, or protocols not present in the sources.
-5. Structure your response using these exact section headers:
-   🚨 Safety / Urgency (Khatray Ki Alamat)
-   🩺 Guideline-Based Guidance (Hidayat)
-   ➡️ Recommended Next Action (Agla Zaroori Qadam)
 
 USER MODE:
 {mode}
@@ -278,7 +294,7 @@ USER QUESTION:
 APPROVED SOURCE EVIDENCE:
 {evidence}
 
-Write a natural, respectful Pakistani Roman Urdu response without any Hindi vocabulary.
+{final_instruction}
 """.strip()
 
 def call_groq(prompt):
@@ -298,7 +314,7 @@ def call_groq(prompt):
         messages=[
             {
                 "role": "system",
-                "content": "You are Maamta AI, a maternal triage assistant for Pakistan. Adhere strictly to Pakistani Roman Urdu and evidence.",
+                "content": "You are Maamta AI, a source-grounded maternal and newborn health assistant. Follow language requirements and grounding rules strictly.",
             },
             {"role": "user", "content": prompt},
         ],
@@ -410,7 +426,7 @@ health_summary = "\n".join(
 question = st.chat_input("Ask in English ya Roman Urdu mein sawal poochein...")
 
 if question:
-    user_is_urdu = is_roman_urdu(question) or is_roman_urdu(symptoms)
+    user_is_urdu = is_roman_urdu(question)
 
     if not docs:
         if user_is_urdu:
