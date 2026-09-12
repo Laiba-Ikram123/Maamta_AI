@@ -15,6 +15,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+def load_css(file_name="style.css"):
+    css_path = Path(file_name)
+    if css_path.exists():
+        with open(css_path, "r", encoding="utf-8") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+load_css("style.css")
+
 GUIDELINE_DIR = Path("guidelines")
 TOP_K = 3
 MIN_RELEVANCE = 0.05
@@ -323,41 +331,6 @@ def call_groq(prompt):
         ],
     )
     return response.choices[0].message.content.strip()
-
-st.markdown(
-    """
-    <style>
-    .block-container {max-width: 1150px; padding-top: 2rem;}
-    .maamta-title {font-size: 2.3rem; font-weight: 700; margin-bottom: 0.2rem;}
-    .maamta-subtitle {color: #a0aab2; margin-bottom: 1.5rem;}
-    
-    .notice {
-        padding: 1rem; 
-        border: 1px solid #d9dee3; 
-        border-radius: 10px; 
-        background: #fafbfc;
-        color: #1a1a1a !important;
-        margin-top: 1.5rem;
-    }
-    .notice strong {
-        color: #000000 !important;
-    }
-    
-    .urgent {
-        padding: 1rem; 
-        border: 1px solid #c62828; 
-        border-radius: 10px; 
-        background: #fff7f7;
-        color: #212121 !important;
-        margin-bottom: 1rem;
-    }
-    .urgent strong {
-        color: #b71c1c !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
 st.markdown('<div class="maamta-title">🩺 Maamta AI</div>', unsafe_allow_html=True)
 st.markdown(
