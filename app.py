@@ -313,7 +313,7 @@ def call_groq(prompt):
     response = client.chat.completions.create(
         model=model,
         temperature=0.1,
-        max_tokens=900,
+        max_tokens=1800,
         messages=[
             {
                 "role": "system",
