@@ -423,7 +423,7 @@ health_summary = "\n".join(
     ]
 )
 
-question = st.chat_input("Ask in English ya Roman Urdu mein sawal poochein...")
+question = st.chat_input("Ask in English or Urdu...")
 
 if question:
     user_is_urdu = is_roman_urdu(question)
