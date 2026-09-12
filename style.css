@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    color: #1e293b !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 /* Page Spacing */
@@ -17,13 +16,12 @@ html, body, [class*="css"] {
     display: none !important;
 }
 
-/* 1. Hero Card */
+/* 1. Hero Card - Theme-Adaptive */
 .hero-wrapper {
-    background: linear-gradient(135deg, #fff7f4 0%, #faede8 100%);
+    background: rgba(224, 122, 95, 0.08);
     border-radius: 22px;
     padding: 2.2rem;
-    border: 1px solid #f6ded5;
-    box-shadow: 0 10px 25px rgba(224, 122, 95, 0.08);
+    border: 1px solid rgba(224, 122, 95, 0.25);
     margin-bottom: 2rem;
 }
 
@@ -31,7 +29,7 @@ html, body, [class*="css"] {
     font-size: 2.3rem;
     font-weight: 800;
     line-height: 1.25;
-    color: #1e293b;
+    color: var(--text-color);
     margin-bottom: 0.6rem;
 }
 
@@ -42,7 +40,8 @@ html, body, [class*="css"] {
 
 .hero-subtext {
     font-size: 0.96rem;
-    color: #64748b;
+    color: var(--text-color);
+    opacity: 0.8;
     max-width: 650px;
     line-height: 1.6;
     margin-bottom: 1.5rem;
@@ -56,18 +55,17 @@ html, body, [class*="css"] {
 }
 
 .feature-card {
-    background: #ffffff;
+    background: var(--secondary-background-color);
     border-radius: 16px;
     padding: 1.1rem;
-    border: 1px solid #f0e4df;
+    border: 1px solid rgba(128, 128, 128, 0.2);
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .feature-icon-box {
     width: 44px;
     height: 44px;
-    background: #fdf0ec;
+    background: rgba(224, 122, 95, 0.15);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -80,21 +78,22 @@ html, body, [class*="css"] {
     margin: 0;
     font-size: 0.9rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text-color);
 }
 
 .feature-card p {
     margin: 0.2rem 0 0 0;
     font-size: 0.76rem;
-    color: #64748b;
+    color: var(--text-color);
+    opacity: 0.7;
 }
 
-/* 2. Patient Intake Section */
+/* 2. Patient Intake Section Header */
 .intake-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #f1f5f9;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     padding-bottom: 0.8rem;
     margin-bottom: 1.2rem;
 }
@@ -103,92 +102,48 @@ html, body, [class*="css"] {
     margin: 0;
     font-size: 1.2rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text-color);
 }
 
 .intake-header span {
     font-size: 0.8rem;
-    color: #c25e43;
-    background: #fdf0ec;
-    border: 1px solid #f9d8ce;
+    color: #e07a5f;
+    background: rgba(224, 122, 95, 0.12);
+    border: 1px solid rgba(224, 122, 95, 0.3);
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
 }
 
-/* Fix Input Form Fields (Light Theme Friendly) */
-div[data-baseweb="input"] {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 10px !important;
-}
-
-div[data-baseweb="input"] input {
-    color: #0f172a !important;
-}
-
-div[data-baseweb="select"] > div {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 10px !important;
-    color: #0f172a !important;
-}
-
-textarea {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 10px !important;
-    color: #0f172a !important;
-}
-
-label p {
-    font-weight: 600 !important;
-    color: #334155 !important;
-}
-
 /* 3. Output Response Container */
 .response-container {
-    background: #ffffff;
+    background: var(--secondary-background-color);
     border-radius: 18px;
     padding: 1.8rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(128, 128, 128, 0.2);
     border-left: 5px solid #e07a5f;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     line-height: 1.7;
     margin-top: 1.8rem;
-    color: #1e293b;
+    color: var(--text-color);
 }
 
 .response-container strong {
-    color: #c25e43;
+    color: #e07a5f;
 }
 
 /* Medical Disclaimer Box */
 .notice {
     padding: 1.1rem 1.3rem;
     border-radius: 12px;
-    background: #fdf0ec;
-    border: 1px solid #f6d8ce;
-    color: #5c3d35 !important;
+    background: rgba(224, 122, 95, 0.08);
+    border: 1px solid rgba(224, 122, 95, 0.25);
+    color: var(--text-color) !important;
+    opacity: 0.9;
     margin-top: 1.5rem;
     font-size: 0.86rem;
     line-height: 1.6;
 }
 
 .notice strong {
-    color: #b2583e !important;
-}
-
-/* 4. Chat Input Bar Fix */
-div[data-testid="stChatInput"] {
-    background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 20px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-}
-
-div[data-testid="stChatInput"] textarea {
-    background-color: transparent !important;
-    color: #0f172a !important;
-    border: none !important;
+    color: #e07a5f !important;
 }
