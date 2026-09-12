@@ -17,9 +17,10 @@ st.set_page_config(
 
 GUIDELINE_DIR = Path("guidelines")
 TOP_K = 5
-MIN_RELEVANCE = 0.06
+MIN_RELEVANCE = 0.05
 
 PAKISTAN_PRIORITY = [
+    "nutrition",
     "pcpnc",
     "mcpc",
     "emonc",
@@ -50,6 +51,8 @@ DANGER_PATTERNS = [
 ]
 
 SYMPTOM_EXPANSIONS = {
+    r"\b(bhuk|bhook|appetite|khana|khorak|diet|nutrition|kamzori|weakness|matli|vomiting|ulte|qay|heartburn|jalan|hazma)\b":
+        "nutrition pregnancy diet meals calories protein iron folic acid nausea vomiting small meals heartburn constipation fluids",
     r"\b(headache|sar dard|sar me dard|chakkar|dhundla|vision|andhera|bp|blood pressure|pre-eclampsia|eclampsia)\b":
         "headache elevated blood pressure pre-eclampsia eclampsia hypertension danger signs proteinuria visual disturbance",
     r"\b(bleeding|khoon|rakht|lohu|haemorrhage|pph|aonwal|placenta|lothray|bachedani|atony)\b":
@@ -77,7 +80,7 @@ def normalize(text: str) -> str:
 
 def is_roman_urdu(text: str) -> bool:
     urdu_markers = [
-        r"\b(hai|hain|ki|ka|ke|ko|se|me|mein|par|kya|kyun|kab|kaise|karo|karein|raha|rahi|ho|tha|thi|the|nahi|aur|bhi|bohot|zyada|dard|sar|khoon|peit|pait|bacha|teeka|teekay|hidayat|ilaaj|hona|chahiye)\b"
+        r"\b(hai|hain|ki|ka|ke|ko|se|me|mein|par|kya|kyun|kab|kaise|karo|karein|raha|rahi|ho|tha|thi|the|nahi|ni|aur|bhi|bohot|zyada|dard|sar|khoon|peit|pait|bacha|teeka|teekay|hidayat|ilaaj|hona|chahiye|khau|khana|khorak|bhuk|bhook)\b"
     ]
     t = text.lower()
     for marker in urdu_markers:
@@ -127,7 +130,7 @@ def load_guidelines():
             while start < len(words):
                 chunk_words = words[start:start + chunk_size]
                 chunk = " ".join(chunk_words).strip()
-                if len(chunk) >= 80:
+                if len(chunk) >= 70:
                     docs.append(
                         {
                             "text": chunk,
@@ -198,7 +201,7 @@ def assess_safety(user_text, docs):
             ),
             "message_ur": (
                 "Batai gayi alamat official guidelines ke mutabiq khatray ki nishani ho sakti hai. "
-                "Isay fori aur ahem samjhein aur bila taa-kheer qareebi hospital ya lady doctor se check karwayen."
+                "Isay fori aur ahem samjhein aur bila taa-kheer qareebi hospital ya doctor se check karwayen."
             ),
         }
 
@@ -274,7 +277,7 @@ You are Maamta AI, an official source-grounded maternal and newborn health assis
 
 NON-NEGOTIABLE GROUNDING RULES:
 1. Base your answer STRICTLY on the supplied APPROVED SOURCE EVIDENCE.
-2. If evidence touches on the condition/symptom, give complete guideline-supported advice.
+2. If evidence touches on the condition/symptom (including diet, appetite, nausea, or nutrition), provide complete guideline-supported advice.
 3. If the evidence completely lacks relevant information to answer safely, state clearly that official guidelines lack sufficient information.
 4. Never invent medications, dosages, or protocols not present in the sources.
 
