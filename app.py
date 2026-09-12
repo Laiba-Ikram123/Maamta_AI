@@ -10,10 +10,7 @@ from groq import Groq
 
 # ============================================================
 # Maamta AI — Source-Grounded Maternal & Newborn Health MVP
-# Pakistan-first, privacy-conscious, single-file Streamlit app
-#
-# Put approved official guideline PDFs in:
-#   guidelines/
+# Pakistan-first, bilingual (Roman Urdu & English) Streamlit app
 # ============================================================
 
 st.set_page_config(
@@ -33,7 +30,7 @@ DISCLAIMER = (
 
 GUIDELINE_DIR = Path("guidelines")
 TOP_K = 5
-MIN_RELEVANCE = 0.08
+MIN_RELEVANCE = 0.06
 
 PAKISTAN_PRIORITY = [
     "pcpnc",
@@ -46,30 +43,67 @@ PAKISTAN_PRIORITY = [
     "pakistan",
 ]
 
+# Comprehensive Danger Patterns in English & Roman Urdu
 DANGER_PATTERNS = [
-    (r"\bheavy bleeding\b|\bsevere bleeding\b|\bprofuse bleeding\b", "heavy/severe bleeding"),
-    (r"\bbleeding\b", "bleeding"),
-    (r"\bconvulsion(s)?\b|\bseizure(s)?\b", "convulsions/seizures"),
-    (r"\bunconscious\b|\bloss of consciousness\b|\bunresponsive\b", "loss of consciousness/unresponsiveness"),
-    (r"\bdifficulty breathing\b|\bdifficult breathing\b|\bbreathlessness\b|\bsevere breathing\b", "difficulty/severe breathing problem"),
-    (r"\bsevere abdominal pain\b|\babdominal pain\b", "severe abdominal pain"),
-    (r"\bsevere headache\b|\bheadache\b", "severe headache"),
-    (r"\bblurred vision\b|\bvisual disturbance\b", "visual disturbance"),
-    (r"\bhigh fever\b|\bsevere fever\b|\bfever\b", "high/severe fever"),
-    (r"\bfoul[- ]smelling discharge\b|\bfoul smelling discharge\b", "foul-smelling discharge"),
-    (r"\bnot breathing\b|\bno breathing\b", "not breathing"),
-    (r"\bblue\b.*\b(lips|skin)\b|\bcyanosis\b", "blue/grey lips or skin"),
-    (r"\bpoor feeding\b", "poor feeding"),
+    (r"\b(heavy bleeding|severe bleeding|profuse bleeding|zyada khoon|bohot khoon|khoon beh raha|khoon ja raha|khoon ke lothray|clots)\b", "heavy/severe bleeding"),
+    (r"\b(bleeding|khoon|rakht|lohu|daag|spotting)\b", "bleeding"),
+    (r"\b(convulsion(s)?|seizure(s)?|jhatkay|jhatke|doray|daura|mirgi|fits)\b", "convulsions/seizures"),
+    (r"\b(unconscious|loss of consciousness|unresponsive|behosh|behoshi|ghashi|hosh kho dena)\b", "loss of consciousness/unresponsiveness"),
+    (r"\b(difficulty breathing|breathlessness|respiratory distress|saans phoolna|saans lene me dushwari|dam ghutna|saans tez)\b", "difficulty/severe breathing problem"),
+    (r"\b(severe abdominal pain|pet dard|peit me dard|pait dard|shadeed dard|kokh me dard|talli me dard)\b", "severe abdominal pain"),
+    (r"\b(severe headache|headache|sar dard|sar me shadeed dard|sar phat raha|sar ghoomna|chakkar)\b", "severe headache"),
+    (r"\b(blurred vision|visual disturbance|dhundla nazar|dhundla dikhai|aankhon k samne andhera|chamkay)\b", "visual disturbance"),
+    (r"\b(high fever|severe fever|fever|tez bukhar|bukhar|tap|hararat|kapkapi|shivering)\b", "high/severe fever"),
+    (r"\b(foul[- ]smelling discharge|badboodar pani|kharab pani|badboodar discharge|peep)\b", "foul-smelling discharge"),
+    (r"\b(not breathing|no breathing|saans nahi le raha|saans band|sans rukna)\b", "not breathing"),
+    (r"\b(blue|cyanosis|neela par jana|neela rang|hont neelay)\b", "blue/grey lips or skin"),
+    (r"\b(poor feeding|doodh nahi pee raha|feed nahi le raha|bacha sust hai|chhati nahi pakad raha)\b", "poor feeding"),
+    (r"\b(epigastric pain|pasliyon me dard|pasli k neeche dard|seene k neeche dard)\b", "epigastric pain"),
+    (r"\b(cord prolapse|naal bahar|naad bahar|umbilical cord outside)\b", "umbilical cord prolapse"),
+    (r"\b(swelling|sujan|paon sooj jana|munh soojna|face swelling)\b", "severe swelling/edema"),
 ]
 
-# Clinical term mapping to bridge lay symptoms with guideline terminology
+# Clinical term mapping covering all 8 guideline topics
 SYMPTOM_EXPANSIONS = {
-    r"\bheadache\b": "headache elevated blood pressure pre-eclampsia eclampsia hypertension danger signs",
-    r"\bbleeding\b": "vaginal bleeding haemorrhage postpartum antepartum shock placenta",
-    r"\bfever\b": "fever infection sepsis temperature danger signs",
-    r"\bbreathing\b": "difficulty breathing respiratory distress cyanosis",
-    r"\babdominal pain\b": "abdominal pain contractions labour ectopic abruptio",
-    r"\bvision\b": "blurred vision visual disturbance pre-eclampsia",
+    # 1. Headache & Blood Pressure
+    r"\b(headache|sar dard|sar me dard|chakkar|dhundla|vision|andhera|bp|blood pressure|pre-eclampsia|eclampsia)\b":
+        "headache elevated blood pressure pre-eclampsia eclampsia hypertension danger signs proteinuria visual disturbance",
+
+    # 2. Bleeding & PPH
+    r"\b(bleeding|khoon|rakht|lohu|haemorrhage|pph|aonwal|placenta|lothray|bachedani|atony)\b":
+        "vaginal bleeding haemorrhage postpartum antepartum shock atonic uterus oxytocin tranexamic acid E-MOTIVE massage",
+
+    # 3. Preterm Labour & Steroids
+    r"\b(preterm|waqt se pehle|satwasa|athwasa|teeka|steroid|dexamethasone|betamethasone|lungs|phephray|tocolytic|nifedipine)\b":
+        "preterm labour antenatal corticosteroids dexamethasone betamethasone nifedipine tocolysis fetal lung maturity gestational age",
+
+    # 4. Shock & Resuscitation
+    r"\b(shock|nabz tez|bp low|systolic|pulse|cannula|fluid|saline|ringers|clotting test|nasg|garment)\b":
+        "shock hypovolaemic resuscitation IV fluids normal saline ringer lactate large-bore cannula bedside clotting test NASG",
+
+    # 5. Delivery & Labour Progress
+    r"\b(labour|dard e zeh|delivery|contractions|paani chhootna|leaking|water break|meconium|sabz pani|kala pani|cord|naad|aonwal|stuck|kandha phansna)\b":
+        "labour childbirth contractions cervical dilatation descent meconium amniotic fluid cord clamping shoulder dystocia breech",
+
+    # 6. Immunization & Vaccines
+    r"\b(vaccine|teekay|teeka|hifazati|bcg|polio|opv|ipv|pentavalent|pcv|rota|measles|khasra|typhoid|tcv|td|tetanus|vvm|mdvp|cold chain)\b":
+        "immunization EPI vaccination schedule BCG OPV Pentavalent PCV Rotavirus IPV Measles Rubella TCV Td vaccine vial monitor MDVP",
+
+    # 7. Newborn Care & Complications
+    r"\b(nawzaida|newborn|bacha|neonatal|kam wazan|lbw|kmc|kangaroo|naaf|cord care|doodh|breastfeeding|resuscitation|apnoea|cyanosis|neela)\b":
+        "newborn resuscitation skin to skin thermal care kangaroo mother care KMC exclusive breastfeeding vitamin K eye prophylaxis cyanosis",
+
+    # 8. Infections, Antibiotics & Sepsis
+    r"\b(infection|sepsis|bukhar|fever|badboo|pus|peep|discharge|antibiotic|ampicillin|gentamicin|erythromycin|amoxicillin|wound|tanka)\b":
+        "infection sepsis puerperal endometritis amnionitis antibiotics ampicillin gentamicin erythromycin wound care prophylactic",
+
+    # 9. Miscarriage & Early Pregnancy
+    r"\b(miscarriage|hamal zaya|abortion|safe|mva|safai|ectopic|bache dani se bahar)\b":
+        "abortion threatened incomplete inevitable ectopic pregnancy manual vacuum aspiration misoprostol evacuation",
+
+    # 10. Postpartum Blues & Psychosis
+    r"\b(udasi|depression|rona|psychosis|wehshat|khayal|mental|dill ghabrana)\b":
+        "postpartum blues depression psychosis maternal mental health anxiety supportive care",
 }
 
 def normalize(text: str) -> str:
@@ -176,7 +210,7 @@ def assess_safety(user_text, docs):
     matches = []
 
     for pattern, label in DANGER_PATTERNS:
-        if re.search(pattern, text, flags=re.I) and corpus_has_phrase(docs, pattern):
+        if re.search(pattern, text, flags=re.I):
             matches.append(label)
 
     matches = list(dict.fromkeys(matches))
@@ -216,39 +250,42 @@ def build_prompt(mode, question, health_summary, results, safety):
     )
 
     mode_instruction = (
-        "Use simple, clear, empathetic, non-technical language suitable for a mother/family. "
-        "Focus on safety, reassurance, and the next immediate steps."
+        "Use simple, polite, empathetic, non-technical language suitable for a mother or her family. "
+        "Focus on safety, practical guidance, and immediate next steps."
         if mode == "Mother / Family"
         else
-        "Use clinical, guideline-oriented terminology suitable for a healthcare worker. "
-        "Include diagnostic criteria, danger sign assessments, and referral protocols."
+        "Use clinical, guideline-oriented terminology suitable for a healthcare worker or doctor. "
+        "Include diagnostic criteria, exact medication dosages, triage levels, and referral protocols."
     )
 
     safety_instruction = (
-        "A critical obstetric danger sign was detected. State urgency first. "
-        "Explain that symptoms like severe headaches can be linked with elevated blood pressure "
-        "or pre-eclampsia and require urgent evaluation (checking blood pressure and urine protein). "
-        "Advise visiting the nearest health facility immediately."
+        "CRITICAL: A potential danger sign or emergency symptom was detected! Put safety and urgent actions first. "
+        "Instruct the user to seek immediate professional assessment or visit the nearest emergency maternity center."
         if safety["urgent"]
         else
-        "No explicit danger sign was triggered, but encourage standard antenatal/postnatal checks "
-        "if symptoms persist."
+        "No severe emergency danger sign was detected, but provide supportive guideline information and advise routine check-up."
     )
 
     return f"""
-You are Maamta AI, a source-grounded maternal and newborn health guidance assistant for Pakistan.
+You are Maamta AI, an official source-grounded maternal and newborn health assistant for Pakistan.
+
+LANGUAGE MATCHING INSTRUCTIONS (VERY IMPORTANT):
+1. Detect the language and writing style of the USER QUESTION:
+   - If the user asks in Roman Urdu (Urdu written in English alphabets, e.g., "mujhe bleeding ho rahi hai", "bacha doodh nahi pee raha", "sar me dard hai"), you MUST answer completely in polite, clear, natural Roman Urdu.
+   - If the user asks in English, answer completely in English.
+   - If the user asks in Urdu script (اردو), answer in Urdu script.
+2. Even when answering in Roman Urdu, ensure medical instructions and drug protocols are exact as found in the evidence.
 
 NON-NEGOTIABLE GROUNDING RULES:
-1. Answer strictly using the provided APPROVED SOURCE EVIDENCE.
-2. If evidence touches on the symptom, provide immediate triage advice based on that evidence.
-3. If the sources completely lack relevant information to guide the user safely, state:
-   "I couldn't find sufficient information in the available guidelines to answer this safely."
-4. Do not invent diagnoses, numerical thresholds, prescriptions, or dosages not found in sources.
-5. Emphasize that a clinical assessment is necessary.
-6. The response must follow this structure:
-   🚨 Safety / Urgency
-   🩺 Guideline-Based Guidance
-   ➡️ Recommended Next Action
+1. Base your answer STRICTLY on the supplied APPROVED SOURCE EVIDENCE.
+2. If evidence touches on the condition/symptom, give complete guideline-supported advice.
+3. If the evidence completely lacks relevant information to answer safely, reply:
+   "I couldn't find sufficient information in the available guidelines to answer this safely." (In Roman Urdu: "Mojooda guidelines mein is baray mein mukammal maloomat nahi mil sakeen.")
+4. Never invent medications, dosages, or protocols not present in the sources.
+5. Structure your response using these exact section headers:
+   🚨 Safety / Urgency (Khatray Ki Alamat)
+   🩺 Guideline-Based Guidance (Hidayat)
+   ➡️ Recommended Next Action (Agla Zaroori Qadam)
 
 USER MODE:
 {mode}
@@ -266,7 +303,7 @@ USER QUESTION:
 APPROVED SOURCE EVIDENCE:
 {evidence}
 
-Write a concise, caring, and practical response.
+Write a comprehensive, medically accurate, and caring response following the required language and structure.
 """.strip()
 
 def call_groq(prompt):
@@ -276,8 +313,7 @@ def call_groq(prompt):
 
     base_url = st.secrets.get("GROQ_BASE_URL", os.getenv("GROQ_BASE_URL", None))
     client = Groq(api_key=api_key, base_url=base_url) if base_url else Groq(api_key=api_key)
-    
-    # Updated to openai/gpt-oss-120b
+
     model = st.secrets.get("GROQ_MODEL", "openai/gpt-oss-120b")
 
     response = client.chat.completions.create(
@@ -287,7 +323,7 @@ def call_groq(prompt):
         messages=[
             {
                 "role": "system",
-                "content": "You are a maternal and newborn health triage assistant. Adhere strictly to the evidence.",
+                "content": "You are Maamta AI, a source-grounded maternal triage assistant. Follow language and grounding rules exactly.",
             },
             {"role": "user", "content": prompt},
         ],
@@ -311,7 +347,7 @@ st.markdown(
 
 st.markdown('<div class="maamta-title">🩺 Maamta AI</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="maamta-subtitle">Source-grounded maternal & newborn health guidance for Pakistan</div>',
+    '<div class="maamta-subtitle">Source-grounded maternal & newborn health guidance for Pakistan (English & Roman Urdu)</div>',
     unsafe_allow_html=True,
 )
 
@@ -347,7 +383,7 @@ with st.sidebar:
     )
 
     st.divider()
-    st.caption("Privacy-conscious MVP: data is used solely in memory for the active query.")
+    st.caption("Privacy-conscious MVP: data is processed in-memory and not permanently stored.")
 
 docs = load_guidelines()
 
@@ -376,7 +412,7 @@ health_summary = "\n".join(
     ]
 )
 
-question = st.chat_input("Ask a maternal or newborn health question...")
+question = st.chat_input("Ask in English ya Roman Urdu mein sawal poochein...")
 
 if question:
     if not docs:
@@ -387,6 +423,7 @@ if question:
     combined_input = f"{question}\n{health_summary}"
     safety = assess_safety(combined_input, docs)
 
+    # Clean query banayein taake default 'Not provided' retrieval ko kharab na kare
     active_details = []
     if symptoms:
         active_details.append(symptoms)
@@ -398,14 +435,16 @@ if question:
     search_text = f"{question} {' '.join(active_details)}".strip()
     expanded_search_query = expand_query(search_text)
 
+    # 1. Primary retrieve with query expansion
     results = retrieve(expanded_search_query, docs)
 
+    # 2. Fallback: agar threshold cross na ho toh top matching passages uthayein
     if not results:
         vectorizer, matrix = build_index([d["text"] for d in docs])
         q_vec = vectorizer.transform([expanded_search_query])
         scores = cosine_similarity(q_vec, matrix).ravel()
         ranked = sorted(range(len(docs)), key=lambda i: scores[i], reverse=True)
-        results = [dict(docs[i], score=float(scores[i])) for i in ranked[:TOP_K] if scores[i] > 0.02]
+        results = [dict(docs[i], score=float(scores[i])) for i in ranked[:TOP_K] if scores[i] > 0.015]
 
     if not results:
         st.warning("I couldn't find sufficient information in the available guidelines to answer this safely.")
@@ -413,9 +452,9 @@ if question:
 
     if safety["urgent"]:
         st.markdown(
-            '<div class="urgent"><strong>🚨 Safety / Urgency</strong><br>'
+            '<div class="urgent"><strong>🚨 Safety / Urgency (Khatray Ki Alamat)</strong><br>'
             + safety["message"]
-            + "<br><br><strong>Potential signs reported:</strong> "
+            + "<br><br><strong>Reported Sign(s):</strong> "
             + ", ".join(safety["signs"])
             + "</div>",
             unsafe_allow_html=True,
@@ -441,14 +480,12 @@ if question:
     st.markdown("### ➡️ Recommended Next Action")
     if safety["urgent"]:
         st.error(
-            "Because a potential danger sign was reported, seek prompt professional "
-            "medical assessment. If the situation appears life-threatening, go to the "
-            "nearest emergency maternity facility immediately."
+            "Emergency/Danger Sign: Foran qareebi maternity hospital ya doctor ke paas jayen. "
+            "Seek immediate professional medical assessment without delay."
         )
     else:
         st.info(
-            "Follow the source-grounded guidance above. If symptoms are severe, worsening, "
-            "or concerning, seek assessment from a qualified healthcare professional."
+            "Follow the source-grounded guidance above. Agar takleef barh rahi ho toh doctor se ruju karein."
         )
 
     st.markdown("### 📚 Evidence / Sources")
