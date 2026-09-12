@@ -337,9 +337,31 @@ st.markdown(
     <style>
     .block-container {max-width: 1150px; padding-top: 2rem;}
     .maamta-title {font-size: 2.3rem; font-weight: 700; margin-bottom: 0.2rem;}
-    .maamta-subtitle {color: #5f6368; margin-bottom: 1.5rem;}
-    .notice {padding: 1rem; border: 1px solid #d9dee3; border-radius: 10px; background: #fafbfc;}
-    .urgent {padding: 1rem; border: 1px solid #c62828; border-radius: 10px; background: #fff7f7;}
+    .maamta-subtitle {color: #a0aab2; margin-bottom: 1.5rem;}
+    
+    /* Notice box font color dark/black */
+    .notice {
+        padding: 1rem; 
+        border: 1px solid #d9dee3; 
+        border-radius: 10px; 
+        background: #fafbfc;
+        color: #1a1a1a !important;
+    }
+    .notice strong {
+        color: #000000 !important;
+    }
+    
+    /* Urgent/Danger box font color dark/black and bold red */
+    .urgent {
+        padding: 1rem; 
+        border: 1px solid #c62828; 
+        border-radius: 10px; 
+        background: #fff7f7;
+        color: #212121 !important;
+    }
+    .urgent strong {
+        color: #b71c1c !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -423,7 +445,6 @@ if question:
     combined_input = f"{question}\n{health_summary}"
     safety = assess_safety(combined_input, docs)
 
-    # Clean query banayein taake default 'Not provided' retrieval ko kharab na kare
     active_details = []
     if symptoms:
         active_details.append(symptoms)
