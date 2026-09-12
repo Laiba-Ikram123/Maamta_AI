@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 GUIDELINE_DIR = Path("guidelines")
-TOP_K = 5
+TOP_K = 3
 MIN_RELEVANCE = 0.05
 
 PAKISTAN_PRIORITY = [
@@ -51,7 +51,7 @@ DANGER_PATTERNS = [
 ]
 
 SYMPTOM_EXPANSIONS = {
-    r"\b(bhuk|bhook|appetite|khana|khorak|diet|nutrition|kamzori|weakness|matli|vomiting|ulte|qay|heartburn|jalan|hazma)\b":
+    r"\b(bhuk|bhook|appetite|khana|khorak|diet|nutrition|kamzori|weakness|matli|vomiting|ulte|qay|heartburn|jalan|hazma|pait|peit)\b":
         "nutrition pregnancy diet meals calories protein iron folic acid nausea vomiting small meals heartburn constipation fluids",
     r"\b(headache|sar dard|sar me dard|chakkar|dhundla|vision|andhera|bp|blood pressure|pre-eclampsia|eclampsia)\b":
         "headache elevated blood pressure pre-eclampsia eclampsia hypertension danger signs proteinuria visual disturbance",
@@ -80,7 +80,7 @@ def normalize(text: str) -> str:
 
 def is_roman_urdu(text: str) -> bool:
     urdu_markers = [
-        r"\b(hai|hain|ki|ka|ke|ko|se|me|mein|par|kya|kyun|kab|kaise|karo|karein|raha|rahi|ho|tha|thi|the|nahi|ni|aur|bhi|bohot|zyada|dard|sar|khoon|peit|pait|bacha|teeka|teekay|hidayat|ilaaj|hona|chahiye|khau|khana|khorak|bhuk|bhook)\b"
+        r"\b(hai|hain|ki|ka|ke|ko|se|me|mein|par|kya|kia|kyun|kyu|kab|kaise|kese|karo|karein|kare|karu|kroun|raha|rahi|rahe|ho|tha|thi|the|nahi|ni|na|aur|bhi|bohot|boht|zyada|zada|dard|sar|khoon|peit|pait|bacha|bache|teeka|teekay|hidayat|ilaaj|ilaj|hona|chahiye|chahye|khau|khao|khana|khorak|bhuk|bhook|kamzori|batao|bataen|mashwara|mujhe|muje|mera|meri|mere)\b"
     ]
     t = text.lower()
     for marker in urdu_markers:
@@ -218,7 +218,7 @@ def build_prompt(mode, question, health_summary, results, safety):
         ]
     )
 
-    user_is_urdu = is_roman_urdu(question)
+    user_is_urdu = is_roman_urdu(question) or is_roman_urdu(health_summary)
 
     if user_is_urdu:
         mode_instruction = (
@@ -234,17 +234,17 @@ def build_prompt(mode, question, health_summary, results, safety):
             "Koi fori emergency alamat nahi mili, aam guideline ke mutabiq mashwara dein."
         )
         language_rule = """
-STRICT LANGUAGE REQUIREMENT:
-- The user asked in ROMAN URDU.
-- You MUST answer COMPLETELY in authentic Pakistani Roman Urdu.
-- DO NOT use English sentences in the body.
-- NEVER use Roman Hindi words (Do NOT use: kripya, upchar, lakshan, samasya, turant, chhatra, mahila, prasav, garbhavastha, aspataal, sujhaav). Use Pakistani Roman Urdu words (baraye meharbani, ilaj, alamat, masla, foran, khatoon/aurat, delivery/paidaish, hamal, hospital, mashwara).
-- Section headers must be:
-  🚨 Safety / Urgency (Khatray Ki Alamat)
-  🩺 Guideline-Based Guidance (Hidayat)
-  ➡️ Recommended Next Action (Agla Zaroori Qadam)
+CRITICAL LANGUAGE REQUIREMENT:
+- The user is communicating in ROMAN URDU.
+- You MUST answer 100% ENTIRELY in authentic Pakistani Roman Urdu.
+- UNDER NO CIRCUMSTANCES should you reply in English prose.
+- NEVER use Roman Hindi words (Do NOT use: kripya, upchar, lakshan, samasya, turant, chhatra, mahila, prasav, garbhavastha, aspataal, sujhaav). Use Pakistani Roman Urdu words (baraye meharbani, ilaj, alamat, masla, foran, khatoon/aurat, delivery/paidaish, hamal, hospital, mashwara, khorak).
+- Section headers must be exactly:
+  🚨 Khatray Ki Alamat
+  🩺 Hidayat (Guideline Guidance)
+  ➡️ Agla Zaroori Qadam (Recommended Next Action)
 """
-        final_instruction = "Write a comprehensive, medically accurate, and caring response strictly in Pakistani Roman Urdu."
+        final_instruction = "Write a comprehensive, fully detailed, and caring response completely in Pakistani Roman Urdu. Do not write in English."
     else:
         mode_instruction = (
             "Use simple, clear, polite, empathetic English suitable for a mother or her family."
@@ -259,16 +259,16 @@ STRICT LANGUAGE REQUIREMENT:
             "No severe danger sign detected. Provide standard guideline recommendations."
         )
         language_rule = """
-STRICT LANGUAGE REQUIREMENT:
-- The user asked in ENGLISH.
-- You MUST answer COMPLETELY in professional English.
+CRITICAL LANGUAGE REQUIREMENT:
+- The user is communicating in ENGLISH.
+- You MUST answer 100% ENTIRELY in professional English.
 - DO NOT use any Roman Urdu or Hindi words.
-- Section headers must be:
+- Section headers must be exactly:
   🚨 Safety / Urgency
   🩺 Guideline-Based Guidance
   ➡️ Recommended Next Action
 """
-        final_instruction = "Write a comprehensive, medically accurate, and professional response strictly in English."
+        final_instruction = "Write a comprehensive, fully detailed, and professional response completely in English."
 
     return f"""
 You are Maamta AI, an official source-grounded maternal and newborn health assistant for Pakistan.
@@ -277,7 +277,7 @@ You are Maamta AI, an official source-grounded maternal and newborn health assis
 
 NON-NEGOTIABLE GROUNDING RULES:
 1. Base your answer STRICTLY on the supplied APPROVED SOURCE EVIDENCE.
-2. If evidence touches on the condition/symptom (including diet, appetite, nausea, or nutrition), provide complete guideline-supported advice.
+2. If evidence touches on diet, nutrition, appetite, or nausea, provide full guideline-supported guidance from the evidence.
 3. If the evidence completely lacks relevant information to answer safely, state clearly that official guidelines lack sufficient information.
 4. Never invent medications, dosages, or protocols not present in the sources.
 
@@ -317,7 +317,7 @@ def call_groq(prompt):
         messages=[
             {
                 "role": "system",
-                "content": "You are Maamta AI, a source-grounded maternal and newborn health assistant. Follow language requirements and grounding rules strictly.",
+                "content": "You are Maamta AI, a source-grounded maternal and newborn health assistant. You strictly match the user language (Roman Urdu vs English) and follow grounding rules.",
             },
             {"role": "user", "content": prompt},
         ],
@@ -376,11 +376,11 @@ with st.sidebar:
     st.divider()
     st.subheader("Structured health information")
 
-    weeks = st.number_input("Pregnancy weeks (optional)", min_value=0, max_value=45, value=0)
-    age = st.number_input("Age (optional)", min_value=0, max_value=120, value=0)
-    bp = st.text_input("Blood pressure (optional)", placeholder="e.g. 120/80")
-    temperature = st.text_input("Temperature (optional)", placeholder="e.g. 38°C")
-    pulse = st.text_input("Pulse (optional)", placeholder="e.g. 90 bpm")
+    weeks = st.number_input("Pregnancy weeks", min_value=0, max_value=45, value=0)
+    age = st.number_input("Age", min_value=0, max_value=120, value=0)
+    bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
+    temperature = st.text_input("Temperature", placeholder="e.g. 38°C")
+    pulse = st.text_input("Pulse", placeholder="e.g. 90 bpm")
     bleeding = st.selectbox(
         "Bleeding",
         ["Not reported", "No", "Yes", "Heavy / severe"],
@@ -392,7 +392,7 @@ with st.sidebar:
     )
     other = st.text_area(
         "Other relevant details",
-        placeholder="Optional. Do not enter name, CNIC, phone, or address.",
+        placeholder="Do not enter name, CNIC, phone, or address.",
         height=90,
     )
 
@@ -415,21 +415,40 @@ with st.expander("Approved source status", expanded=not bool(docs)):
 
 health_summary = "\n".join(
     [
-        f"Pregnancy weeks: {weeks if weeks else 'Not provided'}",
-        f"Age: {age if age else 'Not provided'}",
-        f"Blood pressure: {bp or 'Not provided'}",
-        f"Temperature: {temperature or 'Not provided'}",
-        f"Pulse: {pulse or 'Not provided'}",
+        f"Pregnancy weeks: {weeks}",
+        f"Age: {age}",
+        f"Blood pressure: {bp}",
+        f"Temperature: {temperature}",
+        f"Pulse: {pulse}",
         f"Bleeding: {bleeding}",
-        f"Symptoms: {symptoms or 'Not provided'}",
-        f"Other details: {other or 'Not provided'}",
+        f"Symptoms: {symptoms}",
+        f"Other details: {other or 'None'}",
     ]
 )
 
 question = st.chat_input("Ask in English or Urdu...")
 
 if question:
-    user_is_urdu = is_roman_urdu(question)
+    user_is_urdu = is_roman_urdu(question) or is_roman_urdu(symptoms)
+
+    missing_fields = []
+    if weeks == 0:
+        missing_fields.append("Pregnancy weeks" if not user_is_urdu else "Pregnancy weeks (hamal ke haftay)")
+    if age == 0:
+        missing_fields.append("Age" if not user_is_urdu else "Age (umar)")
+    if not bp.strip():
+        missing_fields.append("Blood pressure" if not user_is_urdu else "Blood pressure (BP)")
+    if not pulse.strip():
+        missing_fields.append("Pulse" if not user_is_urdu else "Pulse (nabz)")
+    if not symptoms.strip():
+        missing_fields.append("Symptoms" if not user_is_urdu else "Symptoms (alamat)")
+
+    if missing_fields:
+        if user_is_urdu:
+            st.warning(f"Baraye meharbani sidebar mein yeh zaroori maloomat darj karein: **{', '.join(missing_fields)}**.")
+        else:
+            st.warning(f"Please provide the required health information in the sidebar: **{', '.join(missing_fields)}**.")
+        st.stop()
 
     if not docs:
         if user_is_urdu:
