@@ -1,108 +1,127 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #fdfbf9 !important;
 }
 
-/* App Canvas & Layout */
+/* Page Width */
 .block-container {
-    max-width: 1000px !important;
-    padding-top: 1.8rem !important;
+    max-width: 1100px !important;
+    padding-top: 1.5rem !important;
     padding-bottom: 5rem !important;
 }
 
-/* Modern Branding Header */
-.maamta-hero {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 1.1rem 1.4rem;
-    background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(20, 184, 166, 0.03) 100%);
-    border: 1px solid rgba(13, 148, 136, 0.2);
-    border-radius: 16px;
+/* Warm Hero Banner */
+.hero-wrapper {
+    background: linear-gradient(135deg, #fff5f2 0%, #faede8 100%);
+    border-radius: 28px;
+    padding: 2.5rem;
+    border: 1px solid #f7ded6;
     margin-bottom: 2rem;
-    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
 }
 
-.maamta-hero-icon {
-    font-size: 2.2rem;
+.hero-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #2b2d42;
+    margin-bottom: 0.8rem;
+}
+
+.hero-title span {
+    color: #e07a5f;
+    font-style: italic;
+}
+
+.hero-subtext {
+    font-size: 1rem;
+    color: #6c757d;
+    max-width: 580px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Feature Badge Row */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 1.5rem;
+}
+
+.feature-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 1.2rem;
+    border: 1px solid #f0e6e2;
+    box-shadow: 0 4px 15px rgba(224, 122, 95, 0.05);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+}
+
+.feature-icon-box {
+    width: 48px;
+    height: 48px;
+    background: #fdf0ec;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+    font-size: 1.4rem;
+    margin: 0 auto 0.8rem auto;
 }
 
-.maamta-hero-text h1 {
-    font-size: 1.8rem;
+.feature-card h4 {
+    margin: 0;
+    font-size: 0.95rem;
     font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.02em;
-    color: #0f766e;
+    color: #2b2d42;
 }
 
-.maamta-hero-text p {
-    margin: 0;
-    font-size: 0.88rem;
-    color: #4b5563;
-    font-weight: 500;
+.feature-card p {
+    margin: 0.3rem 0 0 0;
+    font-size: 0.78rem;
+    color: #8d99ae;
 }
 
-/* Clean Triage Response Container */
+/* Response Card */
 .response-container {
     background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 1.6rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-    margin-top: 1.5rem;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid #f0e6e2;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
     line-height: 1.7;
-    color: #1f2937;
+    margin-top: 1.5rem;
+    color: #2b2d42;
 }
 
-/* Section Headings inside Response */
-.response-container h3, .response-container strong {
-    color: #111827;
-}
-
-/* Medical Disclaimer Card */
+/* Disclaimer Box */
 .notice {
-    padding: 1.1rem 1.3rem;
-    border: 1px solid #e5e7eb;
-    border-left: 4px solid #0d9488;
-    border-radius: 12px;
-    background-color: #f8fafc;
-    color: #334155 !important;
-    margin-top: 1.8rem;
+    padding: 1.2rem;
+    border-radius: 14px;
+    background: #fdf0ec;
+    border: 1px solid #f6d8ce;
+    color: #5c3d35 !important;
+    margin-top: 1.5rem;
     font-size: 0.88rem;
-    line-height: 1.6;
 }
 
 .notice strong {
-    color: #0f766e !important;
-    font-weight: 600;
+    color: #b2583e !important;
 }
 
-/* Sidebar Custom Styling */
-section[data-testid="stSidebar"] {
-    background-color: #fafbfc;
-    border-right: 1px solid #e5e7eb;
-}
-
-section[data-testid="stSidebar"] .stRadio > label {
-    font-weight: 600;
-    color: #111827;
-}
-
-/* Floating Chat Input Bar */
+/* Floating Chat Input */
 div[data-testid="stChatInput"] {
-    border-radius: 16px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-}
-
-div[data-testid="stChatInput"] textarea {
-    border-radius: 12px !important;
+    border-radius: 24px !important;
+    border: 1px solid #eedad3 !important;
+    background: #ffffff !important;
+    box-shadow: 0 6px 25px rgba(224, 122, 95, 0.1) !important;
 }
