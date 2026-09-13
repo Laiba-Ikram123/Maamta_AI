@@ -332,7 +332,7 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# 1. Top Navigation Bar (High-Contrast Frosted Brand Logo)
+# 1. Top Navigation Bar
 st.markdown(
     """
     <div class="top-nav-brand">
@@ -340,8 +340,8 @@ st.markdown(
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="46" height="46" fill="none">
                 <defs>
                     <linearGradient id="maamtaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#ff3b4e"/>
-                        <stop offset="100%" stop-color="#800a16"/>
+                        <stop offset="0%" stop-color="#e63946"/>
+                        <stop offset="100%" stop-color="#9a031e"/>
                     </linearGradient>
                 </defs>
                 <rect width="48" height="48" rx="14" fill="url(#maamtaGrad)" />
@@ -363,7 +363,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 2. Pure Crimson Glassmorphism Hero Section
+# 2. Rich Crimson Red Hero Section
 st.markdown(
     """
     <div class="hero-wrapper-red">
