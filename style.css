@@ -4,10 +4,15 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* Page Spacing */
+/* Fix Header & Logo cut issue with proper top clearance */
+header[data-testid="stHeader"] {
+    background-color: transparent !important;
+    z-index: 1;
+}
+
 .block-container {
-    max-width: 1060px !important;
-    padding-top: 1.2rem !important;
+    max-width: 1080px !important;
+    padding-top: 3.5rem !important;
     padding-bottom: 7rem !important;
 }
 
@@ -21,8 +26,8 @@ html, body, [class*="css"] {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 1.4rem;
-    padding-top: 0.2rem;
+    margin-bottom: 1.5rem;
+    padding: 0.4rem 0;
 }
 
 .brand-logo-svg {
@@ -30,11 +35,6 @@ html, body, [class*="css"] {
     align-items: center;
     justify-content: center;
     filter: drop-shadow(0 6px 14px rgba(230, 57, 70, 0.35));
-    transition: transform 0.25s ease;
-}
-
-.brand-logo-svg:hover {
-    transform: scale(1.05);
 }
 
 .brand-title-wrap {
@@ -44,7 +44,7 @@ html, body, [class*="css"] {
 }
 
 .nav-title {
-    font-size: 2.1rem;
+    font-size: 2.2rem;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -75,13 +75,13 @@ html, body, [class*="css"] {
     border-radius: 24px;
     padding: 2.4rem;
     border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 14px 35px rgba(163, 29, 36, 0.35);
+    box-shadow: 0 14px 35px rgba(163, 29, 36, 0.3);
     margin-bottom: 2rem;
     color: #ffffff !important;
 }
 
 .hero-title-red {
-    font-size: 2.4rem;
+    font-size: 2.3rem;
     font-weight: 800;
     line-height: 1.25;
     color: #ffffff !important;
@@ -94,7 +94,7 @@ html, body, [class*="css"] {
 }
 
 .hero-subtext-red {
-    font-size: 1rem;
+    font-size: 0.98rem;
     color: #ffe5e7 !important;
     max-width: 660px;
     line-height: 1.65;
@@ -117,12 +117,6 @@ html, body, [class*="css"] {
     padding: 1.1rem;
     border: 1px solid rgba(255, 255, 255, 0.22);
     text-align: center;
-    transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.feature-card-red:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.18);
 }
 
 .feature-icon-box-red {
@@ -150,31 +144,58 @@ html, body, [class*="css"] {
     color: #ffccd0 !important;
 }
 
-/* 3. Patient Intake Section Header */
+/* 3. Professional Patient Intake Section Card */
+.intake-box {
+    background: var(--secondary-background-color);
+    border-radius: 20px;
+    padding: 1.8rem;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
 .intake-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-    padding-bottom: 0.8rem;
-    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.4rem;
 }
 
 .intake-header h3 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-color);
 }
 
 .intake-header span {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: #e63946;
     background: rgba(230, 57, 70, 0.12);
     border: 1px solid rgba(230, 57, 70, 0.3);
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
+}
+
+/* Polished Form Inputs */
+div[data-baseweb="input"], div[data-baseweb="select"] > div, textarea {
+    border-radius: 12px !important;
+    border: 1px solid rgba(128, 128, 128, 0.25) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+div[data-baseweb="input"]:focus-within, textarea:focus {
+    border-color: #e63946 !important;
+    box-shadow: 0 0 0 1px #e63946 !important;
+}
+
+label p {
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    color: var(--text-color) !important;
 }
 
 /* 4. Output Response Container */
