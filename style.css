@@ -4,16 +4,6 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* Ambient Canvas Glow to enhance glass reflections */
-.stApp {
-    background: 
-        radial-gradient(circle at 50% -10%, rgba(230, 57, 70, 0.25) 0%, transparent 45%),
-        radial-gradient(circle at 10% 40%, rgba(163, 29, 36, 0.16) 0%, transparent 45%),
-        radial-gradient(circle at 90% 70%, rgba(186, 24, 27, 0.14) 0%, transparent 45%),
-        var(--background-color) !important;
-    background-attachment: fixed !important;
-}
-
 header[data-testid="stHeader"] {
     background-color: transparent !important;
     z-index: 1;
@@ -60,36 +50,33 @@ header[data-testid="stHeader"] {
 }
 
 .nav-title span {
-    color: #ff4d5a;
+    color: #e63946;
     font-weight: 800;
 }
 
 .nav-tagline {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #ff4d5a;
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    padding: 3px 12px;
+    color: #e63946;
+    background: rgba(230, 57, 70, 0.12);
+    border: 1px solid rgba(230, 57, 70, 0.35);
+    padding: 2px 10px;
     border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     width: fit-content;
 }
 
-/* 2. Frosted Red Glass Hero Section (css.glass style) */
+/* 2. Frosted Red Glass Hero Section */
 .hero-wrapper-red {
-    background: linear-gradient(135deg, rgba(179, 18, 38, 0.72) 0%, rgba(100, 10, 20, 0.6) 100%) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25) !important;
+    background: linear-gradient(135deg, rgba(179, 18, 38, 0.85) 0%, rgba(100, 10, 20, 0.78) 100%) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 12px 35px rgba(163, 29, 36, 0.32) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.41) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
     padding: 2.5rem !important;
-    margin-bottom: 2.2rem !important;
+    margin-bottom: 2rem !important;
     color: #ffffff !important;
 }
 
@@ -99,7 +86,7 @@ header[data-testid="stHeader"] {
     line-height: 1.25;
     color: #ffffff !important;
     margin-bottom: 0.8rem;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero-title-red span {
@@ -115,7 +102,6 @@ header[data-testid="stHeader"] {
     margin-bottom: 1.8rem;
 }
 
-/* Sub-cards inside Glass Hero */
 .feature-grid-red {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -125,18 +111,12 @@ header[data-testid="stHeader"] {
 .feature-card-red {
     background: rgba(255, 255, 255, 0.12) !important;
     border-radius: 16px !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     padding: 1.1rem !important;
     text-align: center;
-    transition: transform 0.25s ease, border-color 0.25s ease;
-}
-
-.feature-card-red:hover {
-    transform: translateY(-3px);
-    border-color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .feature-icon-box-red {
@@ -164,12 +144,22 @@ header[data-testid="stHeader"] {
     color: #ffccd0 !important;
 }
 
-/* 3. Intake Section Header */
+/* 3. CONTRAST CARD: Deep Midnight-Navy Glass Intake Container */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: linear-gradient(135deg, #0d121f 0%, #111728 100%) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.24) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35) !important;
+    padding: 2rem !important;
+    margin-bottom: 2rem !important;
+}
+
 .intake-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     padding-bottom: 1rem;
     margin-bottom: 1.4rem;
 }
@@ -178,118 +168,105 @@ header[data-testid="stHeader"] {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-color) !important;
+    color: #ffffff !important;
 }
 
 .intake-header span {
     font-size: 0.78rem;
-    color: #ff4d5a;
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    padding: 4px 12px;
-    border-radius: 16px;
+    color: #ff6b75;
+    background: rgba(230, 57, 70, 0.2);
+    border: 1px solid rgba(230, 57, 70, 0.4);
+    padding: 4px 14px;
+    border-radius: 20px;
     font-weight: 600;
 }
 
-/* 4. Form Inputs & Textarea (css.glass Spec) */
-div[data-baseweb="input"],
-div[data-baseweb="select"] > div,
-div[data-baseweb="textarea"],
-div[data-testid="stTextArea"] textarea {
-    background: rgba(128, 128, 128, 0.1) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.41) !important;
-    color: var(--text-color) !important;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
-}
-
-div[data-baseweb="textarea"]:focus-within,
-div[data-baseweb="input"]:focus-within,
-div[data-testid="stTextArea"] textarea:focus {
-    border-color: #ff4d5a !important;
-    box-shadow: 0 0 14px rgba(255, 77, 90, 0.35) !important;
-}
-
-div[data-testid="stTextArea"] textarea::placeholder,
-div[data-baseweb="input"] input::placeholder {
-    color: var(--text-color) !important;
-    opacity: 0.55 !important;
-}
-
-label p {
+/* 4. High-Contrast Inputs inside the Container */
+[data-testid="stVerticalBlockBorderWrapper"] label p {
     font-weight: 600 !important;
     font-size: 0.88rem !important;
-    color: var(--text-color) !important;
+    color: #e2e8f0 !important;
 }
 
-/* 5. Chat Input Bar (css.glass Spec) */
+[data-testid="stVerticalBlockBorderWrapper"] div[data-baseweb="input"],
+[data-testid="stVerticalBlockBorderWrapper"] div[data-baseweb="select"] > div,
+[data-testid="stVerticalBlockBorderWrapper"] textarea {
+    background: #171e33 !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+    transition: all 0.25s ease !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] div[data-baseweb="input"]:focus-within,
+[data-testid="stVerticalBlockBorderWrapper"] textarea:focus {
+    border-color: #ff4d5a !important;
+    box-shadow: 0 0 12px rgba(255, 77, 90, 0.35) !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] input,
+[data-testid="stVerticalBlockBorderWrapper"] textarea {
+    color: #ffffff !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] textarea::placeholder,
+[data-testid="stVerticalBlockBorderWrapper"] input::placeholder {
+    color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* 5. Sleek Bottom Chat Input Bar */
 div[data-testid="stChatInput"] {
-    background: rgba(128, 128, 128, 0.15) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.41) !important;
+    background: #0d121f !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
 }
 
 div[data-testid="stChatInput"]:focus-within {
     border-color: #ff4d5a !important;
-    box-shadow: 0 0 16px rgba(255, 77, 90, 0.4) !important;
+    box-shadow: 0 0 14px rgba(255, 77, 90, 0.35) !important;
 }
 
 div[data-testid="stChatInput"] textarea {
     background: transparent !important;
-    color: var(--text-color) !important;
+    color: #ffffff !important;
     border: none !important;
-    box-shadow: none !important;
 }
 
 div[data-testid="stChatInput"] textarea::placeholder {
-    color: var(--text-color) !important;
-    opacity: 0.55 !important;
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* 6. Response Container (css.glass Spec) */
+/* 6. Response Container */
 .response-container {
-    background: rgba(128, 128, 128, 0.1) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.41) !important;
+    background: #0d121f !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     border-left: 5px solid #ff4d5a !important;
     padding: 2rem !important;
     line-height: 1.75;
     margin-top: 2rem;
-    color: var(--text-color);
+    color: #f1f5f9;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
 .response-container strong {
-    color: #ff4d5a;
+    color: #ff8a93;
 }
 
-/* 7. Disclaimer Box (css.glass Spec) */
+/* 7. Disclaimer Box */
 .notice {
     background: rgba(230, 57, 70, 0.12) !important;
     border-radius: 16px !important;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.41) !important;
+    border: 1px solid rgba(230, 57, 70, 0.3) !important;
     padding: 1.1rem 1.4rem;
-    color: var(--text-color) !important;
-    opacity: 0.9;
+    color: #cbd5e1 !important;
     margin-top: 1.5rem;
     font-size: 0.86rem;
     line-height: 1.6;
 }
 
 .notice strong {
-    color: #ff4d5a !important;
+    color: #ff6b75 !important;
 }
