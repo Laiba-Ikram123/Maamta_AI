@@ -332,39 +332,46 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# 1. Top Hero Section with Visible Application Title & Brand Badge
+# 1. Top Navigation Bar with Application Title (Yellow Circle Area)
 st.markdown(
     """
-    <div class="hero-wrapper">
-        <div class="app-brand-badge">
-            <span class="brand-icon">🩺</span>
-            <span class="brand-name">Maamta AI</span>
-            <span class="brand-tag">Pakistan Clinical Triage</span>
-        </div>
-        <div class="hero-title">
+    <div class="top-nav-brand">
+        <span class="nav-logo">🩺</span>
+        <span class="nav-title">Maamta AI</span>
+        <span class="nav-tagline">National Clinical Triage</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# 2. Rich Crimson Red Hero Section (Red Circle Area)
+st.markdown(
+    """
+    <div class="hero-wrapper-red">
+        <div class="hero-title-red">
             Empowering Every Mother With <span>Smarter Maternal Care</span>
         </div>
-        <div class="hero-subtext">
+        <div class="hero-subtext-red">
             AI-powered maternal triage and danger sign detection, strictly grounded in Pakistan's official national health guidelines.
         </div>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon-box">🩺</div>
+        <div class="feature-grid-red">
+            <div class="feature-card-red">
+                <div class="feature-icon-box-red">🩺</div>
                 <h4>Real-Time Triage</h4>
                 <p>Instant danger detection</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon-box">📚</div>
+            <div class="feature-card-red">
+                <div class="feature-icon-box-red">📚</div>
                 <h4>Source Grounded</h4>
                 <p>Zero hallucinations</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon-box">🗣️</div>
+            <div class="feature-card-red">
+                <div class="feature-icon-box-red">🗣️</div>
                 <h4>Bilingual Support</h4>
                 <p>English & Roman Urdu</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon-box">🏥</div>
+            <div class="feature-card-red">
+                <div class="feature-icon-box-red">🏥</div>
                 <h4>Facility Guidance</h4>
                 <p>Urgent referral protocols</p>
             </div>
@@ -374,7 +381,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 2. Centered Health Intake Grid (Between Hero & Chat)
+# 3. Centered Health Intake Grid (Between Hero & Chat)
 st.markdown(
     """
     <div class="intake-header">
@@ -427,7 +434,7 @@ health_summary = "\n".join(
     ]
 )
 
-# 3. Bottom Chat Input
+# 4. Bottom Chat Input
 question = st.chat_input("Ask Maamta AI in English or Roman Urdu...")
 
 if question:
