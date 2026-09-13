@@ -25,6 +25,40 @@ html, body, [class*="css"] {
     margin-bottom: 2rem;
 }
 
+/* Brand Badge & Application Title inside Hero */
+.app-brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(224, 122, 95, 0.14);
+    border: 1px solid rgba(224, 122, 95, 0.35);
+    padding: 6px 16px;
+    border-radius: 30px;
+    margin-bottom: 1.2rem;
+}
+
+.brand-icon {
+    font-size: 1.25rem;
+}
+
+.brand-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #e07a5f;
+}
+
+.brand-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.8;
+    border-left: 1px solid rgba(224, 122, 95, 0.4);
+    padding-left: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
 .hero-title {
     font-size: 2.3rem;
     font-weight: 800;
