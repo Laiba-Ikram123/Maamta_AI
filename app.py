@@ -332,10 +332,15 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# 1. Top Hero Section (Blue Area)
+# 1. Top Hero Section with Visible Application Title & Brand Badge
 st.markdown(
     """
     <div class="hero-wrapper">
+        <div class="app-brand-badge">
+            <span class="brand-icon">🩺</span>
+            <span class="brand-name">Maamta AI</span>
+            <span class="brand-tag">Pakistan Clinical Triage</span>
+        </div>
         <div class="hero-title">
             Empowering Every Mother With <span>Smarter Maternal Care</span>
         </div>
@@ -369,7 +374,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 2. Centered Health Intake Grid (Red Area placed between Hero & Chat)
+# 2. Centered Health Intake Grid (Between Hero & Chat)
 st.markdown(
     """
     <div class="intake-header">
@@ -422,7 +427,7 @@ health_summary = "\n".join(
     ]
 )
 
-# 3. Bottom Chat Input (Purple Area)
+# 3. Bottom Chat Input
 question = st.chat_input("Ask Maamta AI in English or Roman Urdu...")
 
 if question:
