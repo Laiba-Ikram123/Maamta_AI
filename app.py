@@ -332,7 +332,7 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# 1. Top Navigation Bar with Custom SVG Logo
+# 1. Top Navigation Bar (Clear from top header bar)
 st.markdown(
     """
     <div class="top-nav-brand">
@@ -400,7 +400,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 3. Centered Health Intake Grid (Between Hero & Chat)
+# 3. Patient Intake Section Wrapped inside an Elegant Triage Box
 st.markdown(
     """
     <div class="intake-header">
@@ -411,31 +411,32 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-r1_col1, r1_col2, r1_col3, r1_col4 = st.columns(4)
-with r1_col1:
-    mode = st.selectbox("User mode", ["Mother / Family", "Healthcare Worker"])
-with r1_col2:
-    weeks = st.number_input("Pregnancy weeks", min_value=0, max_value=45, value=0)
-with r1_col3:
-    age = st.number_input("Age", min_value=0, max_value=120, value=0)
-with r1_col4:
-    bleeding = st.selectbox("Bleeding status", ["Not reported", "No", "Yes", "Heavy / severe"])
+with st.container():
+    r1_col1, r1_col2, r1_col3, r1_col4 = st.columns(4)
+    with r1_col1:
+        mode = st.selectbox("User mode", ["Mother / Family", "Healthcare Worker"])
+    with r1_col2:
+        weeks = st.number_input("Pregnancy weeks", min_value=0, max_value=45, value=0)
+    with r1_col3:
+        age = st.number_input("Age", min_value=0, max_value=120, value=0)
+    with r1_col4:
+        bleeding = st.selectbox("Bleeding status", ["Not reported", "No", "Yes", "Heavy / severe"])
 
-r2_col1, r2_col2, r2_col3, r2_col4 = st.columns(4)
-with r2_col1:
-    bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
-with r2_col2:
-    temperature = st.text_input("Temperature", placeholder="e.g. 37°C")
-with r2_col3:
-    pulse = st.text_input("Pulse", placeholder="e.g. 80 bpm")
-with r2_col4:
-    other = st.text_input("Other medical history", placeholder="e.g. Diabetes, None")
+    r2_col1, r2_col2, r2_col3, r2_col4 = st.columns(4)
+    with r2_col1:
+        bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
+    with r2_col2:
+        temperature = st.text_input("Temperature", placeholder="e.g. 37°C")
+    with r2_col3:
+        pulse = st.text_input("Pulse", placeholder="e.g. 80 bpm")
+    with r2_col4:
+        other = st.text_input("Other medical history", placeholder="e.g. Diabetes, None")
 
-symptoms = st.text_area(
-    "Active symptoms & complaints",
-    placeholder="Describe physical discomfort, pain, headache, nausea, or fever here...",
-    height=80,
-)
+    symptoms = st.text_area(
+        "Active symptoms & complaints",
+        placeholder="Describe physical discomfort, pain, headache, nausea, or fever here...",
+        height=85,
+    )
 
 docs = load_guidelines()
 
