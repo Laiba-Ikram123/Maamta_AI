@@ -332,19 +332,38 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# 1. Top Navigation Bar with Application Title (Yellow Circle Area)
+# 1. Top Navigation Bar with Custom SVG Logo
 st.markdown(
     """
     <div class="top-nav-brand">
-        <span class="nav-logo">🩺</span>
-        <span class="nav-title">Maamta AI</span>
-        <span class="nav-tagline">National Clinical Triage</span>
+        <div class="brand-logo-svg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="46" height="46" fill="none">
+                <defs>
+                    <linearGradient id="maamtaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#e63946"/>
+                        <stop offset="100%" stop-color="#9a031e"/>
+                    </linearGradient>
+                </defs>
+                <rect width="48" height="48" rx="14" fill="url(#maamtaGrad)" />
+                <path d="M24 38s-13-8.2-13-17.5C11 15.5 15 12 19.5 12c2.5 0 4.5 1.2 4.5 1.2s2-1.2 4.5-1.2c4.5 0 8.5 3.5 8.5 8.5C37 29.8 24 38 24 38z" 
+                      fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+                <circle cx="21" cy="18" r="3" fill="#ffffff"/>
+                <path d="M16 29c0-3.5 2.5-6 6-6s6 2.5 6 6" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="27.5" cy="22.5" r="2" fill="#ffccd0"/>
+                <path d="M25 29c0-2 1.5-3.5 3.5-3.5" stroke="#ffccd0" stroke-width="2" stroke-linecap="round"/>
+                <path d="M34 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2z" fill="#ffffff"/>
+            </svg>
+        </div>
+        <div class="brand-title-wrap">
+            <div class="nav-title">Maamta <span>AI</span></div>
+            <span class="nav-tagline">National Clinical Triage</span>
+        </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# 2. Rich Crimson Red Hero Section (Red Circle Area)
+# 2. Rich Crimson Red Hero Section
 st.markdown(
     """
     <div class="hero-wrapper-red">
