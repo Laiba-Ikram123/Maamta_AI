@@ -4,6 +4,16 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
+/* Ambient Canvas Glow for Glass Reflections */
+.stApp {
+    background: 
+        radial-gradient(circle at 50% -12%, rgba(230, 57, 70, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 10% 35%, rgba(163, 29, 36, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 90% 75%, rgba(186, 24, 27, 0.14) 0%, transparent 45%),
+        var(--background-color) !important;
+    background-attachment: fixed !important;
+}
+
 header[data-testid="stHeader"] {
     background-color: transparent !important;
     z-index: 1;
@@ -32,7 +42,7 @@ header[data-testid="stHeader"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 4px 12px rgba(230, 57, 70, 0.4));
+    filter: drop-shadow(0 0 16px rgba(230, 57, 70, 0.55));
 }
 
 .brand-title-wrap {
@@ -50,31 +60,36 @@ header[data-testid="stHeader"] {
 }
 
 .nav-title span {
-    color: #e63946;
+    color: #ff4d5a;
     font-weight: 800;
 }
 
 .nav-tagline {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #e63946;
-    background: rgba(230, 57, 70, 0.12);
+    color: #ff6b75;
+    background: rgba(230, 57, 70, 0.15);
     border: 1px solid rgba(230, 57, 70, 0.35);
     padding: 2px 10px;
     border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     width: fit-content;
+    backdrop-filter: blur(8px);
 }
 
-/* 2. Red Hero Card */
+/* 2. Frosted Crimson Glass Hero Section */
 .hero-wrapper-red {
-    background: linear-gradient(135deg, #9b1c26 0%, #7d131e 50%, #590c14 100%) !important;
-    border-radius: 24px !important;
-    padding: 2.4rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 16px 36px rgba(155, 28, 38, 0.35) !important;
-    margin-bottom: 2rem !important;
+    background: linear-gradient(135deg, rgba(179, 18, 38, 0.6) 0%, rgba(95, 8, 18, 0.5) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-radius: 26px !important;
+    padding: 2.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), 
+                inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+    margin-bottom: 2.2rem !important;
     color: #ffffff !important;
 }
 
@@ -84,22 +99,23 @@ header[data-testid="stHeader"] {
     line-height: 1.25;
     color: #ffffff !important;
     margin-bottom: 0.8rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .hero-title-red span {
-    color: #ffb8bf;
+    color: #ffa8b0;
     font-style: italic;
 }
 
 .hero-subtext-red {
     font-size: 0.98rem;
-    color: #ffe5e7 !important;
-    max-width: 660px;
+    color: rgba(255, 235, 238, 0.95) !important;
+    max-width: 680px;
     line-height: 1.65;
     margin-bottom: 1.8rem;
-    opacity: 0.95;
 }
 
+/* Sub-cards inside Glass Hero */
 .feature-grid-red {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -107,19 +123,27 @@ header[data-testid="stHeader"] {
 }
 
 .feature-card-red {
-    background: rgba(255, 255, 255, 0.12) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.09) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 18px !important;
     padding: 1.1rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
     text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.feature-card-red:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .feature-icon-box-red {
     width: 44px;
     height: 44px;
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -155,36 +179,41 @@ header[data-testid="stHeader"] {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--text-color) !important;
 }
 
 .intake-header span {
     font-size: 0.78rem;
-    color: #e63946;
-    background: rgba(230, 57, 70, 0.12);
+    color: #ff4d5a;
+    background: rgba(230, 57, 70, 0.14);
     border: 1px solid rgba(230, 57, 70, 0.35);
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
+    backdrop-filter: blur(8px);
 }
 
-/* 4. RED CIRCLED AREA FIX: Native Theme-Adaptive Textarea & Form Inputs */
+/* 4. Frosted Glass Input Fields (Dark & Light Adaptive) */
 div[data-baseweb="input"],
 div[data-baseweb="select"] > div,
 div[data-baseweb="textarea"],
 div[data-testid="stTextArea"] textarea {
-    background-color: var(--secondary-background-color) !important;
+    background: rgba(128, 128, 128, 0.08) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(128, 128, 128, 0.28) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 14px !important;
     color: var(--text-color) !important;
-    border: 1px solid rgba(128, 128, 128, 0.3) !important;
-    border-radius: 12px !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.25s ease !important;
 }
 
 div[data-baseweb="textarea"]:focus-within,
 div[data-baseweb="input"]:focus-within,
 div[data-testid="stTextArea"] textarea:focus {
-    border-color: #e63946 !important;
-    box-shadow: 0 0 0 1px #e63946 !important;
+    border-color: #ff4d5a !important;
+    box-shadow: 0 0 12px rgba(255, 77, 90, 0.35) !important;
 }
 
 div[data-testid="stTextArea"] textarea::placeholder,
@@ -199,20 +228,24 @@ label p {
     color: var(--text-color) !important;
 }
 
-/* 5. GREEN CIRCLED AREA FIX: Theme-Adaptive Bottom Floating Chat Input */
+/* 5. Frosted Glass Bottom Chat Input Bar */
 div[data-testid="stChatInput"] {
-    background-color: var(--secondary-background-color) !important;
-    border: 1px solid rgba(128, 128, 128, 0.3) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18) !important;
+    background: rgba(128, 128, 128, 0.12) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(128, 128, 128, 0.25) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.28) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25) !important;
 }
 
 div[data-testid="stChatInput"]:focus-within {
-    border-color: #e63946 !important;
+    border-color: #ff4d5a !important;
+    box-shadow: 0 0 15px rgba(255, 77, 90, 0.4) !important;
 }
 
 div[data-testid="stChatInput"] textarea {
-    background-color: transparent !important;
+    background: transparent !important;
     color: var(--text-color) !important;
     border: none !important;
     box-shadow: none !important;
@@ -223,35 +256,39 @@ div[data-testid="stChatInput"] textarea::placeholder {
     opacity: 0.55 !important;
 }
 
-/* 6. Output Response Container */
+/* 6. Response Glass Container */
 .response-container {
-    background: var(--secondary-background-color);
-    border-radius: 18px;
-    padding: 1.8rem;
-    border: 1px solid rgba(128, 128, 128, 0.25);
-    border-left: 5px solid #e63946;
-    line-height: 1.7;
-    margin-top: 1.8rem;
+    background: rgba(128, 128, 128, 0.08) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    border: 1px solid rgba(128, 128, 128, 0.22) !important;
+    border-left: 5px solid #ff4d5a !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15) !important;
+    line-height: 1.75;
+    margin-top: 2rem;
     color: var(--text-color);
 }
 
 .response-container strong {
-    color: #e63946;
+    color: #ff4d5a;
 }
 
-/* Medical Disclaimer Box */
+/* Disclaimer Box */
 .notice {
-    padding: 1.1rem 1.3rem;
-    border-radius: 12px;
-    background: rgba(230, 57, 70, 0.08);
-    border: 1px solid rgba(230, 57, 70, 0.25);
+    padding: 1.1rem 1.4rem;
+    border-radius: 14px;
+    background: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.28);
+    backdrop-filter: blur(10px);
     color: var(--text-color) !important;
-    opacity: 0.9;
+    opacity: 0.88;
     margin-top: 1.5rem;
     font-size: 0.86rem;
     line-height: 1.6;
 }
 
 .notice strong {
-    color: #e63946 !important;
+    color: #ff4d5a !important;
 }
