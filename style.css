@@ -4,7 +4,15 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* Fix Header & Logo cut issue with proper top clearance */
+/* 1. Canvas with Ambient Mesh Glow for Glass Reflections */
+.stApp {
+    background: radial-gradient(circle at 50% -10%, rgba(230, 57, 70, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 10% 30%, rgba(163, 29, 36, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 90% 70%, rgba(186, 24, 27, 0.14) 0%, transparent 45%),
+                #07090e !important;
+    background-attachment: fixed !important;
+}
+
 header[data-testid="stHeader"] {
     background-color: transparent !important;
     z-index: 1;
@@ -16,12 +24,11 @@ header[data-testid="stHeader"] {
     padding-bottom: 7rem !important;
 }
 
-/* Hide default sidebar controls */
 [data-testid="stSidebarNav"], [data-testid="collapsedControl"] {
     display: none !important;
 }
 
-/* 1. Top Brand Bar & Vector Logo */
+/* 2. Top Brand Bar & Vector Logo */
 .top-nav-brand {
     display: flex;
     align-items: center;
@@ -34,7 +41,7 @@ header[data-testid="stHeader"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 6px 14px rgba(230, 57, 70, 0.35));
+    filter: drop-shadow(0 0 16px rgba(230, 57, 70, 0.6));
 }
 
 .brand-title-wrap {
@@ -48,36 +55,41 @@ header[data-testid="stHeader"] {
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -0.03em;
-    color: var(--text-color);
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
 .nav-title span {
-    color: #e63946;
+    color: #ff4d5a;
     font-weight: 800;
 }
 
 .nav-tagline {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #e63946;
-    background: rgba(230, 57, 70, 0.1);
-    border: 1px solid rgba(230, 57, 70, 0.28);
+    color: #ff6b75;
+    background: rgba(230, 57, 70, 0.15);
+    border: 1px solid rgba(230, 57, 70, 0.35);
     padding: 2px 10px;
     border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     width: fit-content;
+    backdrop-filter: blur(8px);
 }
 
-/* 2. Red Hero Card */
+/* 3. Pure Crimson Glassmorphism Hero Card */
 .hero-wrapper-red {
-    background: linear-gradient(135deg, #a31d24 0%, #85141b 50%, #5e0c11 100%);
-    border-radius: 24px;
-    padding: 2.4rem;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 14px 35px rgba(163, 29, 36, 0.3);
-    margin-bottom: 2rem;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, rgba(179, 18, 38, 0.55) 0%, rgba(102, 7, 18, 0.45) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-radius: 26px !important;
+    padding: 2.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+    margin-bottom: 2.2rem !important;
 }
 
 .hero-title-red {
@@ -86,23 +98,23 @@ header[data-testid="stHeader"] {
     line-height: 1.25;
     color: #ffffff !important;
     margin-bottom: 0.8rem;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .hero-title-red span {
-    color: #ffccd0;
+    color: #ffa3ab;
     font-style: italic;
 }
 
 .hero-subtext-red {
     font-size: 0.98rem;
-    color: #ffe5e7 !important;
-    max-width: 660px;
+    color: rgba(255, 230, 233, 0.9) !important;
+    max-width: 680px;
     line-height: 1.65;
     margin-bottom: 1.8rem;
-    opacity: 0.95;
 }
 
-/* Feature Grid inside Red Hero */
+/* Sub-cards inside Glass Hero */
 .feature-grid-red {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -110,25 +122,34 @@ header[data-testid="stHeader"] {
 }
 
 .feature-card-red {
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 1.1rem;
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 18px !important;
+    padding: 1.1rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
     text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.feature-card-red:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .feature-icon-box-red {
     width: 44px;
     height: 44px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
     margin: 0 auto 0.6rem auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .feature-card-red h4 {
@@ -144,21 +165,12 @@ header[data-testid="stHeader"] {
     color: #ffccd0 !important;
 }
 
-/* 3. Professional Patient Intake Section Card */
-.intake-box {
-    background: var(--secondary-background-color);
-    border-radius: 20px;
-    padding: 1.8rem;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
-}
-
+/* 4. Intake Section Header */
 .intake-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     padding-bottom: 1rem;
     margin-bottom: 1.4rem;
 }
@@ -167,66 +179,96 @@ header[data-testid="stHeader"] {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: #ffffff !important;
 }
 
 .intake-header span {
     font-size: 0.78rem;
-    color: #e63946;
-    background: rgba(230, 57, 70, 0.12);
-    border: 1px solid rgba(230, 57, 70, 0.3);
+    color: #ff6b75;
+    background: rgba(230, 57, 70, 0.16);
+    border: 1px solid rgba(230, 57, 70, 0.35);
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
 }
 
-/* Polished Form Inputs */
+/* 5. Glassmorphic Form Inputs with High Contrast */
 div[data-baseweb="input"], div[data-baseweb="select"] > div, textarea {
-    border-radius: 12px !important;
-    border: 1px solid rgba(128, 128, 128, 0.25) !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(18, 22, 34, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35) !important;
+    transition: all 0.25s ease !important;
 }
 
 div[data-baseweb="input"]:focus-within, textarea:focus {
-    border-color: #e63946 !important;
-    box-shadow: 0 0 0 1px #e63946 !important;
+    border-color: #ff4d5a !important;
+    box-shadow: 0 0 12px rgba(255, 77, 90, 0.35), inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+div[data-baseweb="input"] input, textarea {
+    color: #ffffff !important;
 }
 
 label p {
     font-weight: 600 !important;
     font-size: 0.88rem !important;
-    color: var(--text-color) !important;
+    color: #e2e8f0 !important;
 }
 
-/* 4. Output Response Container */
+/* 6. Chat Input Glass Bar */
+div[data-testid="stChatInput"] {
+    background: rgba(14, 18, 28, 0.85) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.28) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+div[data-testid="stChatInput"] textarea {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 7. Output Response Glass Container */
 .response-container {
-    background: var(--secondary-background-color);
-    border-radius: 18px;
-    padding: 1.8rem;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    border-left: 5px solid #e63946;
-    line-height: 1.7;
-    margin-top: 1.8rem;
-    color: var(--text-color);
+    background: rgba(18, 22, 34, 0.75) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-left: 5px solid #ff4d5a !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
+    line-height: 1.75;
+    margin-top: 2rem;
+    color: #f1f5f9;
 }
 
 .response-container strong {
-    color: #e63946;
+    color: #ffa3ab;
 }
 
-/* Medical Disclaimer Box */
+/* Disclaimer Box */
 .notice {
-    padding: 1.1rem 1.3rem;
-    border-radius: 12px;
-    background: rgba(230, 57, 70, 0.08);
-    border: 1px solid rgba(230, 57, 70, 0.25);
-    color: var(--text-color) !important;
-    opacity: 0.9;
+    padding: 1.1rem 1.4rem;
+    border-radius: 14px;
+    background: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.28);
+    backdrop-filter: blur(10px);
+    color: #cbd5e1 !important;
     margin-top: 1.5rem;
     font-size: 0.86rem;
     line-height: 1.6;
 }
 
 .notice strong {
-    color: #e63946 !important;
+    color: #ff6b75 !important;
 }
