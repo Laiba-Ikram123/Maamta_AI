@@ -4,12 +4,12 @@ html, body, [class*="css"] {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* Ambient Canvas Glow for Glass Reflections */
+/* Ambient Canvas Glow to enhance glass reflections */
 .stApp {
     background: 
-        radial-gradient(circle at 50% -12%, rgba(230, 57, 70, 0.28) 0%, transparent 45%),
-        radial-gradient(circle at 10% 35%, rgba(163, 29, 36, 0.16) 0%, transparent 40%),
-        radial-gradient(circle at 90% 75%, rgba(186, 24, 27, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 50% -10%, rgba(230, 57, 70, 0.25) 0%, transparent 45%),
+        radial-gradient(circle at 10% 40%, rgba(163, 29, 36, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 90% 70%, rgba(186, 24, 27, 0.14) 0%, transparent 45%),
         var(--background-color) !important;
     background-attachment: fixed !important;
 }
@@ -67,28 +67,28 @@ header[data-testid="stHeader"] {
 .nav-tagline {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #ff6b75;
-    background: rgba(230, 57, 70, 0.15);
-    border: 1px solid rgba(230, 57, 70, 0.35);
-    padding: 2px 10px;
+    color: #ff4d5a;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 3px 12px;
     border-radius: 20px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     width: fit-content;
-    backdrop-filter: blur(8px);
 }
 
-/* 2. Frosted Crimson Glass Hero Section */
+/* 2. Frosted Red Glass Hero Section (css.glass style) */
 .hero-wrapper-red {
-    background: linear-gradient(135deg, rgba(179, 18, 38, 0.6) 0%, rgba(95, 8, 18, 0.5) 100%) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border-radius: 26px !important;
+    background: linear-gradient(135deg, rgba(179, 18, 38, 0.72) 0%, rgba(100, 10, 20, 0.6) 100%) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.41) !important;
     padding: 2.5rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), 
-                inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
     margin-bottom: 2.2rem !important;
     color: #ffffff !important;
 }
@@ -99,11 +99,11 @@ header[data-testid="stHeader"] {
     line-height: 1.25;
     color: #ffffff !important;
     margin-bottom: 0.8rem;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .hero-title-red span {
-    color: #ffa8b0;
+    color: #ffccd0;
     font-style: italic;
 }
 
@@ -123,27 +123,26 @@ header[data-testid="stHeader"] {
 }
 
 .feature-card-red {
-    background: rgba(255, 255, 255, 0.09) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
     padding: 1.1rem !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
     text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .feature-card-red:hover {
     transform: translateY(-3px);
-    border-color: rgba(255, 255, 255, 0.45) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .feature-icon-box-red {
     width: 44px;
     height: 44px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.22);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -185,35 +184,36 @@ header[data-testid="stHeader"] {
 .intake-header span {
     font-size: 0.78rem;
     color: #ff4d5a;
-    background: rgba(230, 57, 70, 0.14);
-    border: 1px solid rgba(230, 57, 70, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     padding: 4px 12px;
-    border-radius: 20px;
+    border-radius: 16px;
     font-weight: 600;
-    backdrop-filter: blur(8px);
 }
 
-/* 4. Frosted Glass Input Fields (Dark & Light Adaptive) */
+/* 4. Form Inputs & Textarea (css.glass Spec) */
 div[data-baseweb="input"],
 div[data-baseweb="select"] > div,
 div[data-baseweb="textarea"],
 div[data-testid="stTextArea"] textarea {
-    background: rgba(128, 128, 128, 0.08) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border: 1px solid rgba(128, 128, 128, 0.28) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 14px !important;
+    background: rgba(128, 128, 128, 0.1) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.41) !important;
     color: var(--text-color) !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-    transition: all 0.25s ease !important;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
 }
 
 div[data-baseweb="textarea"]:focus-within,
 div[data-baseweb="input"]:focus-within,
 div[data-testid="stTextArea"] textarea:focus {
     border-color: #ff4d5a !important;
-    box-shadow: 0 0 12px rgba(255, 77, 90, 0.35) !important;
+    box-shadow: 0 0 14px rgba(255, 77, 90, 0.35) !important;
 }
 
 div[data-testid="stTextArea"] textarea::placeholder,
@@ -228,20 +228,19 @@ label p {
     color: var(--text-color) !important;
 }
 
-/* 5. Frosted Glass Bottom Chat Input Bar */
+/* 5. Chat Input Bar (css.glass Spec) */
 div[data-testid="stChatInput"] {
-    background: rgba(128, 128, 128, 0.12) !important;
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    border: 1px solid rgba(128, 128, 128, 0.25) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.28) !important;
-    border-radius: 22px !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25) !important;
+    background: rgba(128, 128, 128, 0.15) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.41) !important;
 }
 
 div[data-testid="stChatInput"]:focus-within {
     border-color: #ff4d5a !important;
-    box-shadow: 0 0 15px rgba(255, 77, 90, 0.4) !important;
+    box-shadow: 0 0 16px rgba(255, 77, 90, 0.4) !important;
 }
 
 div[data-testid="stChatInput"] textarea {
@@ -256,16 +255,16 @@ div[data-testid="stChatInput"] textarea::placeholder {
     opacity: 0.55 !important;
 }
 
-/* 6. Response Glass Container */
+/* 6. Response Container (css.glass Spec) */
 .response-container {
-    background: rgba(128, 128, 128, 0.08) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
-    border-radius: 20px !important;
-    padding: 2rem !important;
-    border: 1px solid rgba(128, 128, 128, 0.22) !important;
+    background: rgba(128, 128, 128, 0.1) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.41) !important;
     border-left: 5px solid #ff4d5a !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15) !important;
+    padding: 2rem !important;
     line-height: 1.75;
     margin-top: 2rem;
     color: var(--text-color);
@@ -275,15 +274,17 @@ div[data-testid="stChatInput"] textarea::placeholder {
     color: #ff4d5a;
 }
 
-/* Disclaimer Box */
+/* 7. Disclaimer Box (css.glass Spec) */
 .notice {
+    background: rgba(230, 57, 70, 0.12) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.41) !important;
     padding: 1.1rem 1.4rem;
-    border-radius: 14px;
-    background: rgba(230, 57, 70, 0.1);
-    border: 1px solid rgba(230, 57, 70, 0.28);
-    backdrop-filter: blur(10px);
     color: var(--text-color) !important;
-    opacity: 0.88;
+    opacity: 0.9;
     margin-top: 1.5rem;
     font-size: 0.86rem;
     line-height: 1.6;
