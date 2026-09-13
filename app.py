@@ -332,7 +332,7 @@ def call_groq(prompt):
     )
     return response.choices[0].message.content.strip()
 
-# 1. Top Navigation Bar (Clear from top header bar)
+# 1. Top Navigation Bar (High-Contrast Frosted Brand Logo)
 st.markdown(
     """
     <div class="top-nav-brand">
@@ -340,13 +340,13 @@ st.markdown(
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="46" height="46" fill="none">
                 <defs>
                     <linearGradient id="maamtaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#e63946"/>
-                        <stop offset="100%" stop-color="#9a031e"/>
+                        <stop offset="0%" stop-color="#ff3b4e"/>
+                        <stop offset="100%" stop-color="#800a16"/>
                     </linearGradient>
                 </defs>
                 <rect width="48" height="48" rx="14" fill="url(#maamtaGrad)" />
                 <path d="M24 38s-13-8.2-13-17.5C11 15.5 15 12 19.5 12c2.5 0 4.5 1.2 4.5 1.2s2-1.2 4.5-1.2c4.5 0 8.5 3.5 8.5 8.5C37 29.8 24 38 24 38z" 
-                      fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+                      fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
                 <circle cx="21" cy="18" r="3" fill="#ffffff"/>
                 <path d="M16 29c0-3.5 2.5-6 6-6s6 2.5 6 6" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
                 <circle cx="27.5" cy="22.5" r="2" fill="#ffccd0"/>
@@ -363,7 +363,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 2. Rich Crimson Red Hero Section
+# 2. Pure Crimson Glassmorphism Hero Section
 st.markdown(
     """
     <div class="hero-wrapper-red">
@@ -400,7 +400,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 3. Patient Intake Section Wrapped inside an Elegant Triage Box
+# 3. Patient Intake Section
 st.markdown(
     """
     <div class="intake-header">
@@ -411,32 +411,31 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-with st.container():
-    r1_col1, r1_col2, r1_col3, r1_col4 = st.columns(4)
-    with r1_col1:
-        mode = st.selectbox("User mode", ["Mother / Family", "Healthcare Worker"])
-    with r1_col2:
-        weeks = st.number_input("Pregnancy weeks", min_value=0, max_value=45, value=0)
-    with r1_col3:
-        age = st.number_input("Age", min_value=0, max_value=120, value=0)
-    with r1_col4:
-        bleeding = st.selectbox("Bleeding status", ["Not reported", "No", "Yes", "Heavy / severe"])
+r1_col1, r1_col2, r1_col3, r1_col4 = st.columns(4)
+with r1_col1:
+    mode = st.selectbox("User mode", ["Mother / Family", "Healthcare Worker"])
+with r1_col2:
+    weeks = st.number_input("Pregnancy weeks", min_value=0, max_value=45, value=0)
+with r1_col3:
+    age = st.number_input("Age", min_value=0, max_value=120, value=0)
+with r1_col4:
+    bleeding = st.selectbox("Bleeding status", ["Not reported", "No", "Yes", "Heavy / severe"])
 
-    r2_col1, r2_col2, r2_col3, r2_col4 = st.columns(4)
-    with r2_col1:
-        bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
-    with r2_col2:
-        temperature = st.text_input("Temperature", placeholder="e.g. 37°C")
-    with r2_col3:
-        pulse = st.text_input("Pulse", placeholder="e.g. 80 bpm")
-    with r2_col4:
-        other = st.text_input("Other medical history", placeholder="e.g. Diabetes, None")
+r2_col1, r2_col2, r2_col3, r2_col4 = st.columns(4)
+with r2_col1:
+    bp = st.text_input("Blood pressure", placeholder="e.g. 120/80")
+with r2_col2:
+    temperature = st.text_input("Temperature", placeholder="e.g. 37°C")
+with r2_col3:
+    pulse = st.text_input("Pulse", placeholder="e.g. 80 bpm")
+with r2_col4:
+    other = st.text_input("Other medical history", placeholder="e.g. Diabetes, None")
 
-    symptoms = st.text_area(
-        "Active symptoms & complaints",
-        placeholder="Describe physical discomfort, pain, headache, nausea, or fever here...",
-        height=85,
-    )
+symptoms = st.text_area(
+    "Active symptoms & complaints",
+    placeholder="Describe physical discomfort, pain, headache, nausea, or fever here...",
+    height=85,
+)
 
 docs = load_guidelines()
 
