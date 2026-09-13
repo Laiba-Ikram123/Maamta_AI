@@ -7,7 +7,7 @@ html, body, [class*="css"] {
 /* Page Spacing */
 .block-container {
     max-width: 1060px !important;
-    padding-top: 1.5rem !important;
+    padding-top: 1.2rem !important;
     padding-bottom: 7rem !important;
 }
 
@@ -16,90 +16,99 @@ html, body, [class*="css"] {
     display: none !important;
 }
 
-/* 1. Hero Card - Theme-Adaptive */
-.hero-wrapper {
-    background: rgba(224, 122, 95, 0.08);
-    border-radius: 22px;
-    padding: 2.2rem;
-    border: 1px solid rgba(224, 122, 95, 0.25);
-    margin-bottom: 2rem;
-}
-
-/* Brand Badge & Application Title inside Hero */
-.app-brand-badge {
-    display: inline-flex;
+/* 1. Top Brand Bar (Yellow Circle Area) */
+.top-nav-brand {
+    display: flex;
     align-items: center;
-    gap: 10px;
-    background: rgba(224, 122, 95, 0.14);
-    border: 1px solid rgba(224, 122, 95, 0.35);
-    padding: 6px 16px;
-    border-radius: 30px;
+    gap: 12px;
     margin-bottom: 1.2rem;
+    padding-top: 0.2rem;
 }
 
-.brand-icon {
-    font-size: 1.25rem;
+.nav-logo {
+    font-size: 2.2rem;
+    line-height: 1;
 }
 
-.brand-name {
-    font-size: 1.15rem;
+.nav-title {
+    font-size: 2rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
-    color: #e07a5f;
-}
-
-.brand-tag {
-    font-size: 0.75rem;
-    font-weight: 600;
+    letter-spacing: -0.02em;
     color: var(--text-color);
-    opacity: 0.8;
-    border-left: 1px solid rgba(224, 122, 95, 0.4);
-    padding-left: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-.hero-title {
-    font-size: 2.3rem;
+.nav-tagline {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #e63946;
+    background: rgba(230, 57, 70, 0.12);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* 2. Red Hero Card (Red Circle Area) */
+.hero-wrapper-red {
+    background: linear-gradient(135deg, #a31d24 0%, #85141b 50%, #5e0c11 100%);
+    border-radius: 24px;
+    padding: 2.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 14px 35px rgba(163, 29, 36, 0.35);
+    margin-bottom: 2rem;
+    color: #ffffff !important;
+}
+
+.hero-title-red {
+    font-size: 2.4rem;
     font-weight: 800;
     line-height: 1.25;
-    color: var(--text-color);
-    margin-bottom: 0.6rem;
+    color: #ffffff !important;
+    margin-bottom: 0.8rem;
 }
 
-.hero-title span {
-    color: #e07a5f;
+.hero-title-red span {
+    color: #ffccd0;
     font-style: italic;
 }
 
-.hero-subtext {
-    font-size: 0.96rem;
-    color: var(--text-color);
-    opacity: 0.8;
-    max-width: 650px;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+.hero-subtext-red {
+    font-size: 1rem;
+    color: #ffe5e7 !important;
+    max-width: 660px;
+    line-height: 1.65;
+    margin-bottom: 1.8rem;
+    opacity: 0.95;
 }
 
-/* Feature Badges */
-.feature-grid {
+/* Feature Grid inside Red Hero */
+.feature-grid-red {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
 }
 
-.feature-card {
-    background: var(--secondary-background-color);
+.feature-card-red {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 1.1rem;
-    border: 1px solid rgba(128, 128, 128, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     text-align: center;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.feature-icon-box {
+.feature-card-red:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.feature-icon-box-red {
     width: 44px;
     height: 44px;
-    background: rgba(224, 122, 95, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -108,21 +117,20 @@ html, body, [class*="css"] {
     margin: 0 auto 0.6rem auto;
 }
 
-.feature-card h4 {
+.feature-card-red h4 {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: #ffffff !important;
 }
 
-.feature-card p {
-    margin: 0.2rem 0 0 0;
+.feature-card-red p {
+    margin: 0.25rem 0 0 0;
     font-size: 0.76rem;
-    color: var(--text-color);
-    opacity: 0.7;
+    color: #ffccd0 !important;
 }
 
-/* 2. Patient Intake Section Header */
+/* 3. Patient Intake Section Header */
 .intake-header {
     display: flex;
     align-items: center;
@@ -141,36 +149,36 @@ html, body, [class*="css"] {
 
 .intake-header span {
     font-size: 0.8rem;
-    color: #e07a5f;
-    background: rgba(224, 122, 95, 0.12);
-    border: 1px solid rgba(224, 122, 95, 0.3);
+    color: #e63946;
+    background: rgba(230, 57, 70, 0.12);
+    border: 1px solid rgba(230, 57, 70, 0.3);
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: 600;
 }
 
-/* 3. Output Response Container */
+/* 4. Output Response Container */
 .response-container {
     background: var(--secondary-background-color);
     border-radius: 18px;
     padding: 1.8rem;
     border: 1px solid rgba(128, 128, 128, 0.2);
-    border-left: 5px solid #e07a5f;
+    border-left: 5px solid #e63946;
     line-height: 1.7;
     margin-top: 1.8rem;
     color: var(--text-color);
 }
 
 .response-container strong {
-    color: #e07a5f;
+    color: #e63946;
 }
 
 /* Medical Disclaimer Box */
 .notice {
     padding: 1.1rem 1.3rem;
     border-radius: 12px;
-    background: rgba(224, 122, 95, 0.08);
-    border: 1px solid rgba(224, 122, 95, 0.25);
+    background: rgba(230, 57, 70, 0.08);
+    border: 1px solid rgba(230, 57, 70, 0.25);
     color: var(--text-color) !important;
     opacity: 0.9;
     margin-top: 1.5rem;
@@ -179,5 +187,5 @@ html, body, [class*="css"] {
 }
 
 .notice strong {
-    color: #e07a5f !important;
+    color: #e63946 !important;
 }
